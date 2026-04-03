@@ -1,154 +1,144 @@
-# Design Company Skills
+# Company Skills
 
-A curated collection of Claude skills and commands for design agency workflows. Extend Claude's capabilities for brand strategy, design systems, content creation, and creative operations.
+A plugin that gives Claude Code a "mini team of agents" for your daily, weekly, and as-needed workflows. Works for any company — tech, CPG, services, creative, you name it.
 
-## Skills vs Commands
+## Quick Start
 
-| Type | Purpose | Activation |
-|------|---------|------------|
-| **Skills** | Domain knowledge, auto-activating expertise | Context-based, automatic |
-| **Commands** | User-invoked workflows, repeatable actions | `/command-name`, manual |
+**Option 1: Clone and install (recommended)**
+```bash
+# Clone to your Claude skills directory
+git clone https://github.com/opensesh/company-skills.git ~/.claude/skills/company-skills
+
+# Start Claude Code and run the onboarding
+/install-skills
+```
+
+**Option 2: If you already have it cloned**
+```bash
+# Just run the onboarding command
+/install-skills
+```
+
+The onboarding interview takes about 2 minutes and sets up your personalized config.
+
+---
+
+## What You Get
+
+### Commands (User-Invoked Workflows)
+
+| Category | Command | What It Does |
+|----------|---------|--------------|
+| **Daily** | `/daily-brief` | Morning overview of calendar, tasks, and priorities |
+| **Daily** | `/weekly-recap` | End-of-week reflection and next-week planning |
+| **Meetings** | `/meeting-brief` | Create focused agendas through guided questions |
+| **Meetings** | `/meeting-recap` | Document meetings with action items and owners |
+| **Thinking** | `/devils-advocate` | Challenge assumptions, red-team your thinking |
+| **Thinking** | `/pre-mortem` | "Imagine this failed—why?" analysis |
+| **Content** | `/social-post` | Guided content for LinkedIn, Instagram, Substack |
+| **Content** | `/case-study` | Generate case study drafts from project data |
+| **Research** | `/site-analysis` | Analyze websites for architecture, design, SEO |
+
+### Skills (Auto-Activating Expertise)
+
+| Category | Skill | When It Activates |
+|----------|-------|-------------------|
+| **Brand** | `brand-voice` | When writing content that needs brand tone |
+| **Design** | `design-feedback` | When reviewing visual designs |
+| **Design** | `frontend-design` | When building UI components |
+| **Development** | `verification-before-completion` | Before claiming work is done |
+| **Development** | `systematic-debugging` | When diagnosing issues |
+
+---
 
 ## Repository Structure
 
 ```
-design-company-skills/
-├── commands/                 # User-invoked workflows
-│   ├── daily/                # Daily productivity & planning
-│   ├── thinking/             # Critical thinking tools
-│   ├── meetings/             # Meeting workflows
-│   ├── content/              # Content creation
-│   └── creative/             # Creative research & analysis
-├── skills/                   # Auto-activating expertise
-│   ├── brand/                # Brand strategy & identity
-│   ├── design/               # Design systems & UI/UX
-│   ├── code/                 # Component libraries & frameworks
-│   ├── operations/           # Business operations
-│   └── development/          # Development workflows
-└── templates/                # Skill templates
+company-skills/
+├── installer/                     # Onboarding system
+│   ├── install-skills.md          # Main /install-skills command
+│   ├── interview-flow.md          # Question orchestration
+│   └── mcp-setup/                 # MCP education & guides
+│       ├── mcp-education.md       # "What is MCP?" explained simply
+│       ├── recommended-mcps.md    # Curated starter list
+│       └── add-mcp-guide.md       # How to add any MCP
+├── commands/
+│   ├── daily/                     # Daily productivity
+│   ├── thinking/                  # Critical thinking tools
+│   ├── meetings/                  # Meeting workflows
+│   ├── content/                   # Content creation
+│   ├── creative/                  # Creative research
+│   └── maintenance/               # Help & config commands
+├── skills/                        # Auto-activating expertise
+│   ├── brand/
+│   ├── design/
+│   ├── development/
+│   └── operations/
+└── templates/                     # Templates for new skills
 ```
 
 ---
 
-## Commands
+## After Installation
 
-### Daily Productivity (`commands/daily/`)
+Your personalized config is stored at `~/.claude/skills-config.yaml`. It contains:
 
-| Command | Description |
-|---------|-------------|
-| [/daily-brief](commands/daily/daily-brief.md) | Morning briefing aggregating email, calendar, tasks, and social analytics |
-| [/weekly-recap](commands/daily/weekly-recap.md) | End-of-week summary for personal reflection and planning |
-| [/kickoff-prep](commands/daily/kickoff-prep.md) | Generate project kickoff materials from brief or proposal |
+- **Tools you use** — Calendar, Notion, Slack, etc.
+- **Connected MCPs** — What's integrated and what it can do
+- **Workflow preferences** — Daily, weekly, or as-needed cadence
 
-### Critical Thinking (`commands/thinking/`)
+### Maintenance Commands
 
-| Command | Description |
-|---------|-------------|
-| [/devils-advocate](commands/thinking/devils-advocate.md) | Challenge assumptions, identify weaknesses, red-team current thinking |
-| [/pre-mortem](commands/thinking/pre-mortem.md) | "Imagine this failed—why?" Future-failure analysis before execution |
-
-### Meetings (`commands/meetings/`)
-
-| Command | Description |
-|---------|-------------|
-| [/meeting-brief](commands/meetings/meeting-brief.md) | Interactive agenda creation workflow through guided questions |
-| [/meeting-recap](commands/meetings/meeting-recap.md) | Post-meeting documentation with action items, owners, and deadlines |
-
-### Content Creation (`commands/content/`)
-
-| Command | Description |
-|---------|-------------|
-| [/social-post](commands/content/social-post.md) | Guided content creation for LinkedIn, Instagram, or Substack |
-| [/case-study](commands/content/case-study.md) | Generate case study draft from project data and outcomes |
-
-### Creative Research (`commands/creative/`)
-
-| Command | Description |
-|---------|-------------|
-| [/site-analysis](commands/creative/site-analysis/) | Analyze websites for architecture, SEO, templates, and design tokens |
+| Command | What It Does |
+|---------|--------------|
+| `/skills-help` | See all available commands and skills |
+| `/add-tool` | Connect a new MCP with guided setup |
+| `/customize` | Update your preferences |
 
 ---
 
-## Skills
+## How Commands Adapt
 
-### Brand (`skills/brand/`)
+Commands gracefully adapt based on what's connected:
 
-| Skill | Description |
-|-------|-------------|
-| [brand-voice](skills/brand/brand-voice.md) | Write content matching defined brand voice and tone |
-| [open-session-brand](skills/brand/open-session-brand.md) | Open Session official brand colors, typography, and style |
-| [tone-of-voice-audit](skills/brand/tone-of-voice-audit.md) | Audit content against brand voice guidelines, score adherence |
-| [brand-guidelines-template](skills/brand/brand-guidelines-template.md) | Customizable brand identity skill template |
+**With Calendar + Notion connected:**
+```
+/daily-brief → Full automated brief with meetings and tasks
+```
 
-### Design (`skills/design/`)
+**With only Calendar:**
+```
+/daily-brief → Shows meetings, asks about tasks
+```
 
-| Skill | Description |
-|-------|-------------|
-| [design-feedback](skills/design/design-feedback.md) | Structured, actionable feedback on visual designs |
-| [frontend-design](skills/design/frontend-design.md) | Production-grade frontend interfaces with intentional aesthetics |
-| [accessibility-audit](skills/design/accessibility-audit.md) | WCAG compliance checking and accessibility issue identification |
-| [design-critique-facilitator](skills/design/design-critique-facilitator.md) | Run structured design critiques with roles and frameworks |
-| [design-system-scaffolder](skills/design/design-system-scaffolder.md) | Establish and document design systems from scratch |
+**With nothing connected:**
+```
+/daily-brief → "Tell me what's on your plate and I'll help prioritize."
+```
 
-### Code (`skills/code/`)
-
-| Skill | Description |
-|-------|-------------|
-| [component-system](skills/code/component-system.md) | Configurable component library integration (Untitled UI, ShadCN, Radix, Chakra) |
-
-### Operations (`skills/operations/`)
-
-| Skill | Description |
-|-------|-------------|
-| [skill-creator](skills/operations/skill-creator.md) | Guide for creating effective Claude skills |
-| [decision-framework](skills/operations/decision-framework.md) | Apply structured decision-making (RAPID, DACI, etc.) |
-
-### Development (`skills/development/`)
-
-| Skill | Description |
-|-------|-------------|
-| [systematic-debugging](skills/development/systematic-debugging.md) | Four-phase methodology for diagnosing and resolving issues |
-| [verification-before-completion](skills/development/verification-before-completion.md) | Evidence-based completion claims with fresh verification |
-| [design-system-quality](skills/development/design-system-quality.md) | Quality gates for design system compliance and accessibility |
-| [performance-review](skills/development/performance-review.md) | Analyze code/sites for performance issues and optimizations |
+No hard failures. Commands work at any integration level.
 
 ---
 
-## Using in Claude Desktop
+## MCP Integration
 
-### Adding Commands
+MCPs (Model Context Protocol servers) let Claude connect to your tools. Common ones:
 
-1. Open Claude Desktop
-2. Go to **Settings** > **Commands** (or **Skills**)
-3. Click **Add Command**
-4. Copy the contents of the command `.md` file
-5. Paste and save
+| MCP | What It Enables |
+|-----|-----------------|
+| Google Calendar | Auto-fetch events for daily briefs |
+| Notion | Tasks, docs, project management |
+| GitHub | Code search, PR reviews |
+| Firecrawl | Deep website analysis |
+| Gmail | Email summaries and drafts |
 
-### Adding Skills
-
-1. Open Claude Desktop
-2. Go to **Settings** > **Skills**
-3. Click **Add Skill** or **Import from File**
-4. Select or paste the skill `.md` file
-
----
-
-## MCP Dependencies
-
-Some commands integrate with external services via MCP servers:
-
-| Command | Required MCPs |
-|---------|---------------|
-| `/daily-brief` | Gmail, Google Calendar, Notion |
-| `/meeting-brief` | Google Calendar (for agenda update) |
-| `/meeting-recap` | Notion (optional, for storage) |
-| `/site-analysis` | Firecrawl (for deep analysis mode) |
+See [`installer/mcp-setup/`](installer/mcp-setup/) for setup guides.
 
 ---
 
 ## Creating New Skills
 
-Use the template at `templates/skill-template.md` or see [skill-creator](skills/operations/skill-creator.md) for guidance.
+Use the template at [`templates/skill-template.md`](templates/skill-template.md) or see the [skill-creator](skills/operations/skill-creator.md) guide.
 
 ### Skill Anatomy
 
@@ -175,24 +165,17 @@ Detailed instructions for Claude to follow...
 Show input/output examples...
 ```
 
-### Best Practices
-
-1. **Be specific** - Vague instructions produce vague results
-2. **Include examples** - Show Claude what good output looks like
-3. **Define boundaries** - What should the skill NOT do?
-4. **Test iteratively** - Refine based on actual usage
-
 ---
 
 ## Contributing
 
-1. Create a new branch for your skill/command
-2. Add your file to the appropriate category folder
-3. Test in Claude Desktop
+1. Fork and clone the repo
+2. Add your skill/command to the appropriate folder
+3. Test with Claude Code
 4. Submit a PR with usage examples
 
 ---
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) for details.
+MIT License — See [LICENSE](LICENSE) for details.
