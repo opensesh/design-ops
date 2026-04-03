@@ -22,6 +22,7 @@ design-company-skills/
 ├── skills/                   # Auto-activating expertise
 │   ├── brand/                # Brand strategy & identity
 │   ├── design/               # Design systems & UI/UX
+│   ├── code/                 # Component libraries & frameworks
 │   ├── operations/           # Business operations
 │   └── development/          # Development workflows
 └── templates/                # Skill templates
@@ -88,6 +89,12 @@ design-company-skills/
 | [accessibility-audit](skills/design/accessibility-audit.md) | WCAG compliance checking and accessibility issue identification |
 | [design-critique-facilitator](skills/design/design-critique-facilitator.md) | Run structured design critiques with roles and frameworks |
 | [design-system-scaffolder](skills/design/design-system-scaffolder.md) | Establish and document design systems from scratch |
+
+### Code (`skills/code/`)
+
+| Skill | Description |
+|-------|-------------|
+| [untitled-ui](skills/code/untitled-ui.md) | Use Untitled UI component library, templates, and icons via MCP |
 
 ### Operations (`skills/operations/`)
 
