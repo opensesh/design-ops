@@ -1,16 +1,10 @@
-# Website Intelligence Skill
+# /site-analysis
 
----
+Analyze any website and generate structured intelligence reports with site architecture, SEO insights, and component analysis.
 
-name: website-intel
-description: Analyze any website and generate structured intelligence reports with site architecture, SEO insights, and visual page diagrams
-arguments:
+## Trigger
 
-- name: url
-  description: The root URL to analyze (required)
-- name: output-path
-  description: Directory for output files (default: current directory)
-  invocation: slash-command
+User invokes `/site-analysis <url>` to analyze a website.
 
 ---
 
@@ -47,7 +41,7 @@ Extract from user invocation:
 - **Output Path** (optional): Directory for generated files (default: `./`)
 
 ```
-/website-intel https://example.com ./output
+/site-analysis https://example.com ./output
 ```
 
 If URL is missing, prompt user: "Please provide a URL to analyze."

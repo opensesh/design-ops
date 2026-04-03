@@ -17,7 +17,8 @@ design-company-skills/
 │   ├── daily/                # Daily productivity & planning
 │   ├── thinking/             # Critical thinking tools
 │   ├── meetings/             # Meeting workflows
-│   └── content/              # Content creation
+│   ├── content/              # Content creation
+│   └── creative/             # Creative research & analysis
 ├── skills/                   # Auto-activating expertise
 │   ├── brand/                # Brand strategy & identity
 │   ├── design/               # Design systems & UI/UX
@@ -59,6 +60,12 @@ design-company-skills/
 | [/social-post](commands/content/social-post.md) | Guided content creation for LinkedIn, Instagram, or Substack |
 | [/case-study](commands/content/case-study.md) | Generate case study draft from project data and outcomes |
 
+### Creative Research (`commands/creative/`)
+
+| Command | Description |
+|---------|-------------|
+| [/site-analysis](commands/creative/site-analysis/) | Analyze websites for architecture, SEO, templates, and design tokens |
+
 ---
 
 ## Skills
@@ -87,7 +94,6 @@ design-company-skills/
 | Skill | Description |
 |-------|-------------|
 | [skill-creator](skills/operations/skill-creator.md) | Guide for creating effective Claude skills |
-| [website-intelligence](skills/operations/website-intelligence.md) | Analyze websites for architecture, SEO, and design patterns |
 | [decision-framework](skills/operations/decision-framework.md) | Apply structured decision-making (RAPID, DACI, etc.) |
 
 ### Development (`skills/development/`)
@@ -129,6 +135,7 @@ Some commands integrate with external services via MCP servers:
 | `/daily-brief` | Gmail, Google Calendar, Notion |
 | `/meeting-brief` | Google Calendar (for agenda update) |
 | `/meeting-recap` | Notion (optional, for storage) |
+| `/site-analysis` | Firecrawl (for deep analysis mode) |
 
 ---
 
