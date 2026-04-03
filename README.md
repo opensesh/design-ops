@@ -14,11 +14,10 @@ A curated collection of Claude skills and commands for design agency workflows. 
 ```
 design-company-skills/
 ├── commands/                 # User-invoked workflows
-│   ├── daily/                # Daily productivity
+│   ├── daily/                # Daily productivity & planning
 │   ├── thinking/             # Critical thinking tools
 │   ├── meetings/             # Meeting workflows
-│   ├── content/              # Content creation
-│   └── project/              # Project management
+│   └── content/              # Content creation
 ├── skills/                   # Auto-activating expertise
 │   ├── brand/                # Brand strategy & identity
 │   ├── design/               # Design systems & UI/UX
@@ -37,6 +36,7 @@ design-company-skills/
 |---------|-------------|
 | [/daily-brief](commands/daily/daily-brief.md) | Morning briefing aggregating email, calendar, tasks, and social analytics |
 | [/weekly-recap](commands/daily/weekly-recap.md) | End-of-week summary for personal reflection and planning |
+| [/kickoff-prep](commands/daily/kickoff-prep.md) | Generate project kickoff materials from brief or proposal |
 
 ### Critical Thinking (`commands/thinking/`)
 
@@ -58,13 +58,6 @@ design-company-skills/
 |---------|-------------|
 | [/social-post](commands/content/social-post.md) | Guided content creation for LinkedIn, Instagram, or Substack |
 | [/case-study](commands/content/case-study.md) | Generate case study draft from project data and outcomes |
-
-### Project Management (`commands/project/`)
-
-| Command | Description |
-|---------|-------------|
-| [/project-health](commands/project/project-health.md) | Generate project status report with health indicators |
-| [/kickoff-prep](commands/project/kickoff-prep.md) | Generate project kickoff materials from brief or proposal |
 
 ---
 
@@ -136,7 +129,6 @@ Some commands integrate with external services via MCP servers:
 | `/daily-brief` | Gmail, Google Calendar, Notion |
 | `/meeting-brief` | Google Calendar (for agenda update) |
 | `/meeting-recap` | Notion (optional, for storage) |
-| `/project-health` | Notion |
 
 ---
 
