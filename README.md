@@ -1,86 +1,148 @@
 # Design Company Skills
 
-A curated collection of Claude skills for design agency workflows. These skills extend Claude's capabilities for brand strategy, design systems, client work, and creative operations.
+A curated collection of Claude skills and commands for design agency workflows. Extend Claude's capabilities for brand strategy, design systems, content creation, and creative operations.
 
-## What Are Skills?
+## Skills vs Commands
 
-Skills are instruction sets that give Claude specialized knowledge and behaviors for specific tasks. They're markdown files that Claude reads and follows when activated.
+| Type | Purpose | Activation |
+|------|---------|------------|
+| **Skills** | Domain knowledge, auto-activating expertise | Context-based, automatic |
+| **Commands** | User-invoked workflows, repeatable actions | `/command-name`, manual |
 
 ## Repository Structure
 
 ```
 design-company-skills/
-├── skills/                    # Production-ready skills
-│   ├── brand/                 # Brand strategy & identity
-│   ├── design/                # Design systems & UI/UX
-│   ├── client/                # Client communication & management
-│   ├── operations/            # Business operations
-│   └── development/           # Development workflows
-├── templates/                 # Skill templates
-└── .github/                   # GitHub configuration
+├── commands/                 # User-invoked workflows
+│   ├── daily/                # Daily productivity
+│   ├── thinking/             # Critical thinking tools
+│   ├── meetings/             # Meeting workflows
+│   ├── content/              # Content creation
+│   └── project/              # Project management
+├── skills/                   # Auto-activating expertise
+│   ├── brand/                # Brand strategy & identity
+│   ├── design/               # Design systems & UI/UX
+│   ├── operations/           # Business operations
+│   └── development/          # Development workflows
+└── templates/                # Skill templates
 ```
 
-## Available Skills
+---
+
+## Commands
+
+### Daily Productivity (`commands/daily/`)
+
+| Command | Description |
+|---------|-------------|
+| [/daily-brief](commands/daily/daily-brief.md) | Morning briefing aggregating email, calendar, tasks, and social analytics |
+| [/weekly-recap](commands/daily/weekly-recap.md) | End-of-week summary for personal reflection and planning |
+
+### Critical Thinking (`commands/thinking/`)
+
+| Command | Description |
+|---------|-------------|
+| [/devils-advocate](commands/thinking/devils-advocate.md) | Challenge assumptions, identify weaknesses, red-team current thinking |
+| [/pre-mortem](commands/thinking/pre-mortem.md) | "Imagine this failed—why?" Future-failure analysis before execution |
+
+### Meetings (`commands/meetings/`)
+
+| Command | Description |
+|---------|-------------|
+| [/meeting-brief](commands/meetings/meeting-brief.md) | Interactive agenda creation workflow through guided questions |
+| [/meeting-recap](commands/meetings/meeting-recap.md) | Post-meeting documentation with action items, owners, and deadlines |
+
+### Content Creation (`commands/content/`)
+
+| Command | Description |
+|---------|-------------|
+| [/social-post](commands/content/social-post.md) | Guided content creation for LinkedIn, Instagram, or Substack |
+| [/case-study](commands/content/case-study.md) | Generate case study draft from project data and outcomes |
+
+### Project Management (`commands/project/`)
+
+| Command | Description |
+|---------|-------------|
+| [/project-health](commands/project/project-health.md) | Generate project status report with health indicators |
+| [/kickoff-prep](commands/project/kickoff-prep.md) | Generate project kickoff materials from brief or proposal |
+
+---
+
+## Skills
 
 ### Brand (`skills/brand/`)
+
 | Skill | Description |
 |-------|-------------|
 | [brand-voice](skills/brand/brand-voice.md) | Write content matching defined brand voice and tone |
 | [open-session-brand](skills/brand/open-session-brand.md) | Open Session official brand colors, typography, and style |
+| [tone-of-voice-audit](skills/brand/tone-of-voice-audit.md) | Audit content against brand voice guidelines, score adherence |
+| [brand-guidelines-template](skills/brand/brand-guidelines-template.md) | Customizable brand identity skill template |
 
 ### Design (`skills/design/`)
+
 | Skill | Description |
 |-------|-------------|
 | [design-feedback](skills/design/design-feedback.md) | Structured, actionable feedback on visual designs |
 | [frontend-design](skills/design/frontend-design.md) | Production-grade frontend interfaces with intentional aesthetics |
-
-### Client (`skills/client/`)
-| Skill | Description |
-|-------|-------------|
-| [proposal-writer](skills/client/proposal-writer.md) | Compelling project proposals for client work |
+| [accessibility-audit](skills/design/accessibility-audit.md) | WCAG compliance checking and accessibility issue identification |
+| [design-critique-facilitator](skills/design/design-critique-facilitator.md) | Run structured design critiques with roles and frameworks |
+| [design-system-scaffolder](skills/design/design-system-scaffolder.md) | Establish and document design systems from scratch |
 
 ### Operations (`skills/operations/`)
+
 | Skill | Description |
 |-------|-------------|
 | [skill-creator](skills/operations/skill-creator.md) | Guide for creating effective Claude skills |
 | [website-intelligence](skills/operations/website-intelligence.md) | Analyze websites for architecture, SEO, and design patterns |
+| [decision-framework](skills/operations/decision-framework.md) | Apply structured decision-making (RAPID, DACI, etc.) |
 
 ### Development (`skills/development/`)
+
 | Skill | Description |
 |-------|-------------|
 | [systematic-debugging](skills/development/systematic-debugging.md) | Four-phase methodology for diagnosing and resolving issues |
 | [verification-before-completion](skills/development/verification-before-completion.md) | Evidence-based completion claims with fresh verification |
 | [design-system-quality](skills/development/design-system-quality.md) | Quality gates for design system compliance and accessibility |
+| [performance-review](skills/development/performance-review.md) | Analyze code/sites for performance issues and optimizations |
 
-## Using Skills in Claude Desktop
+---
 
-### Manual Import
+## Using in Claude Desktop
+
+### Adding Commands
+
+1. Open Claude Desktop
+2. Go to **Settings** > **Commands** (or **Skills**)
+3. Click **Add Command**
+4. Copy the contents of the command `.md` file
+5. Paste and save
+
+### Adding Skills
 
 1. Open Claude Desktop
 2. Go to **Settings** > **Skills**
-3. Click **Add Skill**
-4. Copy the contents of the skill `.md` file
-5. Paste and save
+3. Click **Add Skill** or **Import from File**
+4. Select or paste the skill `.md` file
 
-### From File
+---
 
-1. Download the skill `.md` file
-2. In Claude Desktop: **Settings** > **Skills** > **Import from File**
-3. Select the downloaded file
+## MCP Dependencies
 
-## Skill Categories
+Some commands integrate with external services via MCP servers:
 
-| Category | Description |
-|----------|-------------|
-| `brand/` | Brand strategy, voice & tone, identity guidelines |
-| `design/` | Design systems, component patterns, UI/UX principles |
-| `client/` | Client communication, proposals, feedback handling |
-| `operations/` | Project management, documentation, workflows |
-| `development/` | Code quality, frontend patterns, technical standards |
+| Command | Required MCPs |
+|---------|---------------|
+| `/daily-brief` | Gmail, Google Calendar, Notion |
+| `/meeting-brief` | Google Calendar (for agenda update) |
+| `/meeting-recap` | Notion (optional, for storage) |
+| `/project-health` | Notion |
+
+---
 
 ## Creating New Skills
 
-Use the template at `templates/skill-template.md` as a starting point, or see [skill-creator](skills/operations/skill-creator.md) for comprehensive guidance.
+Use the template at `templates/skill-template.md` or see [skill-creator](skills/operations/skill-creator.md) for guidance.
 
 ### Skill Anatomy
 
@@ -89,7 +151,11 @@ Use the template at `templates/skill-template.md` as a starting point, or see [s
 
 Brief description of what this skill does.
 
-## When to Use
+## Purpose
+
+Why this skill exists.
+
+## When to Activate
 
 - Trigger condition 1
 - Trigger condition 2
@@ -110,12 +176,16 @@ Show input/output examples...
 3. **Define boundaries** - What should the skill NOT do?
 4. **Test iteratively** - Refine based on actual usage
 
+---
+
 ## Contributing
 
-1. Create a new branch for your skill
-2. Add your skill to the appropriate category folder
-3. Test the skill in Claude Desktop
+1. Create a new branch for your skill/command
+2. Add your file to the appropriate category folder
+3. Test in Claude Desktop
 4. Submit a PR with usage examples
+
+---
 
 ## License
 
