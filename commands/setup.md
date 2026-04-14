@@ -54,29 +54,30 @@ if (web/co-work environment detected):
 
 ## Welcome Screen
 
-Present the welcome message:
+Present the welcome message with ASCII art header:
 
 ```
-╭──────────────────────────────────────────────────────────────╮
-│  Welcome to Design Company Skills                            │
-│                                                              │
-│  This is a Claude Code plugin — a package of skills,         │
-│  commands, and agents designed for design companies          │
-│  and entrepreneurs.                                          │
-│                                                              │
-│  Works in:                                                   │
-│  • Claude Code (terminal)                                    │
-│  • Claude Desktop (Code tab)                                 │
-│  • VS Code Extension                                         │
-│                                                              │
-│  We'll set up your data sources across three areas:          │
-│                                                              │
-│  1. Operations — Calendar, tasks, communication              │
-│  2. Design — Code repos, design files                        │
-│  3. Analytics — Web, links, social                           │
-│                                                              │
-│  Let's get started.                                          │
-╰──────────────────────────────────────────────────────────────╯
+██████╗ ███████╗███████╗██╗ ██████╗ ███╗   ██╗     ██████╗ ██████╗ ███████╗
+██╔══██╗██╔════╝██╔════╝██║██╔════╝ ████╗  ██║    ██╔═══██╗██╔══██╗██╔════╝
+██║  ██║█████╗  ███████╗██║██║  ███╗██╔██╗ ██║    ██║   ██║██████╔╝███████╗
+██║  ██║██╔══╝  ╚════██║██║██║   ██║██║╚██╗██║    ██║   ██║██╔═══╝ ╚════██║
+██████╔╝███████╗███████║██║╚██████╔╝██║ ╚████║    ╚██████╔╝██║     ███████║
+╚═════╝ ╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚═╝     ╚══════╝
+
+A Claude Code plugin for design companies and entrepreneurs.
+
+Works in:
+• Claude Code (terminal)
+• Claude Desktop (Code tab)
+• VS Code Extension
+
+We'll set up your data sources across three pillars:
+
+1. Operations — Calendar, tasks, communication
+2. Design — Code repos, design files
+3. Analytics — Web, links, social
+
+Let's get started.
 ```
 
 ---
