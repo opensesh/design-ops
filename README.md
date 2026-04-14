@@ -86,9 +86,7 @@ The Cowork tab is great for knowledge work, but Company Skills needs the Code ta
 | `/meeting-brief` | Create focused agendas through guided questions |
 | `/meeting-recap` | Document meetings with action items and owners |
 | `/devils-advocate` | Challenge assumptions, red-team your thinking |
-| `/pre-mortem` | "Imagine this failed—why?" analysis |
 | `/social-post` | Guided content for LinkedIn, Instagram, Substack |
-| `/case-study` | Generate case study drafts from project data |
 | `/site-analysis` | Analyze websites for architecture, design, SEO |
 | `/kickoff-prep` | Generate project kickoff materials |
 
@@ -180,9 +178,7 @@ company-skills/
 │   ├── meeting-brief.md
 │   ├── meeting-recap.md
 │   ├── devils-advocate.md
-│   ├── pre-mortem.md
 │   ├── social-post.md
-│   ├── case-study.md
 │   ├── site-analysis.md
 │   ├── kickoff-prep.md
 │   ├── skills-help.md

@@ -72,9 +72,9 @@ Weekly workflows:
 [ ] Weekly recap — reflect on the week, plan the next
 
 As-needed tools:
-[ ] Decision support — challenge assumptions, pre-mortems
+[ ] Decision support — challenge assumptions, red-team thinking
 [ ] Research — analyze websites, competitors
-[ ] Content — social posts, case studies
+[ ] Content — social posts for LinkedIn, Instagram, Substack
 ```
 
 - Let them select multiple
@@ -139,7 +139,6 @@ workflows:
     - weekly_recap
   as_needed:
     - devils_advocate
-    - pre_mortem
     - site_analysis
     - social_post
 
@@ -177,7 +176,6 @@ Here's what you have:
 
 **As-Needed:**
 - /devils-advocate — challenge your assumptions
-- /pre-mortem — "imagine this failed—why?"
 - /site-analysis — analyze any website
 - /social-post — create content for social platforms
 
@@ -208,9 +206,9 @@ Map interview selections to commands and skills:
 | Morning brief | `/daily-brief` | — |
 | Meeting prep | `/meeting-brief`, `/meeting-recap` | — |
 | Weekly recap | `/weekly-recap` | — |
-| Decision support | `/devils-advocate`, `/pre-mortem` | — |
+| Decision support | `/devils-advocate` | — |
 | Research | `/site-analysis` | `website-intelligence` |
-| Content | `/social-post`, `/case-study` | `brand-voice` |
+| Content | `/social-post` | `brand-voice` |
 
 ---
 
