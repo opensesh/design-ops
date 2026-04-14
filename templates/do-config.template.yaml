@@ -1,8 +1,8 @@
-# Design Company Skills Configuration v2.0
-# Copy this to ~/.claude/dcs-config.yaml and fill in your values
+# DESIGN-OPS Configuration v2.0
+# Copy this to ~/.claude/do-config.yaml and fill in your values
 #
 # Setup: Run /do:setup for guided configuration
-# Docs: https://github.com/opensesh/design-company-skills
+# Docs: https://github.com/opensesh/DESIGN-OPS
 
 # ─────────────────────────────────────────────────────────────────────────────
 # METADATA

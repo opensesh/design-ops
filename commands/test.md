@@ -13,7 +13,7 @@ User runs `/do:test` to diagnose issues or verify setup after changes.
 ### Step 1: Announce Test Suite
 
 ```markdown
-## Design Company Skills — Diagnostics
+## DESIGN-OPS — Diagnostics
 
 Running verification tests...
 ```
@@ -27,7 +27,7 @@ Running verification tests...
 ```
 
 **Test 1: Config file exists**
-- Check: `~/.claude/dcs-config.yaml` exists
+- Check: `~/.claude/do-config.yaml` exists
 - Pass: `[x] Config file exists`
 - Fail: `[ ] Config file not found — run /do:setup`
 
@@ -231,7 +231,7 @@ If any pillar enabled:
 Full test output:
 
 ```markdown
-## Design Company Skills — Diagnostics
+## DESIGN-OPS — Diagnostics
 
 ### Configuration
 - [x] Config file exists

@@ -1,6 +1,6 @@
 # Configuration Schema Reference (v2.0)
 
-Complete reference for the Design Company Skills configuration file.
+Complete reference for the DESIGN-OPS configuration file.
 
 ## Version History
 
@@ -15,8 +15,8 @@ Complete reference for the Design Company Skills configuration file.
 
 | File | Purpose | Location |
 |------|---------|----------|
-| Global config | Main configuration | `~/.claude/dcs-config.yaml` |
-| Project config | Per-project overrides | `.claude/design-company-skills.local.md` |
+| Global config | Main configuration | `~/.claude/do-config.yaml` |
+| Project config | Per-project overrides | `.claude/design-ops.local.md` |
 | Legacy config | Old team-pulse config (v1) | `~/.claude/team-pulse-config.yaml` |
 
 ---
@@ -601,7 +601,7 @@ Check that MCP server responds to basic queries.
 
 ### Config Not Loading
 
-1. Check file exists: `ls ~/.claude/dcs-config.yaml`
+1. Check file exists: `ls ~/.claude/do-config.yaml`
 2. Check YAML syntax: `python -c "import yaml; yaml.safe_load(open(...))" `
 3. Run `/do:test` for diagnostics
 

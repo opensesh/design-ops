@@ -1,12 +1,12 @@
 {
-  "name": "design-company-skills",
-  "version": "1.0.0",
-  "description": "Design company toolkit: brand guidelines, design system, team productivity, Figma + GitHub integration",
+  "name": "design-ops",
+  "version": "2.1.0",
+  "description": "DESIGN-OPS toolkit: brand guidelines, design system, team productivity, Figma + GitHub integration",
   "author": {
     "name": "Open Session",
     "url": "https://opensession.ai"
   },
-  "repository": "https://github.com/opensesh/design-company-skills",
+  "repository": "https://github.com/opensesh/DESIGN-OPS",
   "commands_dir": "commands",
   "skills_dir": "skills"
 }

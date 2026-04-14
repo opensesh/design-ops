@@ -12,12 +12,12 @@ User runs `/do:status` to see what's configured and working.
 
 ### Step 1: Load Configuration
 
-1. **Read** `~/.claude/dcs-config.yaml`
+1. **Read** `~/.claude/do-config.yaml`
 2. **If not found:**
    ```markdown
-   ## Design Company Skills — Not Configured
+   ## DESIGN-OPS — Not Configured
 
-   No configuration found at ~/.claude/dcs-config.yaml
+   No configuration found at ~/.claude/do-config.yaml
 
    Run `/do:setup` to get started, or see `/do:help` for available commands.
    ```
@@ -50,7 +50,7 @@ For each pillar, check connected tools:
 ### Step 3: Render Status
 
 ```markdown
-## Design Company Skills — Status
+## DESIGN-OPS — Status
 
 **Config version:** 2.0
 **Last updated:** April 14, 2025
@@ -116,7 +116,7 @@ Based on your connected tools:
 
 ### Config Location
 
-`~/.claude/dcs-config.yaml`
+`~/.claude/do-config.yaml`
 
 ---
 
@@ -159,7 +159,7 @@ Based on your connected tools:
 If config doesn't exist:
 
 ```markdown
-## Design Company Skills — Not Set Up
+## DESIGN-OPS — Not Set Up
 
 The plugin is installed but not configured.
 
@@ -181,7 +181,7 @@ The plugin is installed but not configured.
 For quick checks, show condensed view:
 
 ```markdown
-## DCS Status
+## DESIGN-OPS Status
 
 **Operations:** ✓ Notion, Google Workspace | ⚠ Slack (not configured)
 **Design:** ✓ GitHub, Figma

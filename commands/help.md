@@ -125,7 +125,7 @@ These activate automatically based on context — no command needed:
 
 ## Configuration
 
-Config file: `~/.claude/dcs-config.yaml`
+Config file: `~/.claude/do-config.yaml`
 
 View current config: `/do:status`
 Update config: `/do:configure`
@@ -175,7 +175,7 @@ If user runs `/do:help {topic}`:
 ```
 
 ### Configuration
-Dashboard reads from `~/.claude/dcs-config.yaml`:
+Dashboard reads from `~/.claude/do-config.yaml`:
 - Which pillars are enabled
 - Which tools are connected
 - Which outcomes to include

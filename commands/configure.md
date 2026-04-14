@@ -16,7 +16,7 @@ Can also target specific pillars:
 
 ## Pre-Flight Check
 
-1. **Check for config** at `~/.claude/dcs-config.yaml`
+1. **Check for config** at `~/.claude/do-config.yaml`
    - If not found: "No config found. Run `/do:setup` first to get started."
    - Exit early
 
@@ -31,7 +31,7 @@ Can also target specific pillars:
 ## Main Menu
 
 ```markdown
-## Configure Design Company Skills
+## Configure DESIGN-OPS
 
 **Current status:**
 - Operations: 2 tools (Notion, Google Workspace)
@@ -359,7 +359,7 @@ Proceed with these changes?
 
 2. **Backup** current config:
 ```bash
-cp ~/.claude/dcs-config.yaml ~/.claude/dcs-config.yaml.bak
+cp ~/.claude/do-config.yaml ~/.claude/do-config.yaml.bak
 ```
 
 3. **Write** updated config

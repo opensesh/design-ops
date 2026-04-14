@@ -1,6 +1,6 @@
 # /do:setup
 
-Main onboarding wizard for Design Company Skills. Guides users through connecting data sources across three business pillars: Operations, Design, and Analytics.
+Main onboarding wizard for DESIGN-OPS. Guides users through connecting data sources across three business pillars: Operations, Design, and Analytics.
 
 ## Trigger
 
@@ -36,14 +36,14 @@ if (web/co-work environment detected):
 
 ### 2. Check Existing Configuration
 
-1. **Check for existing config** at `~/.claude/dcs-config.yaml`
+1. **Check for existing config** at `~/.claude/do-config.yaml`
    - If exists, check version field
    - If v1.x: "Found v1 config. Want to migrate to the new pillar-based format?"
    - If v2.x: "You have an existing config. What would you like to do?"
    - Options: `Update existing` | `Start fresh` | `Just show status`
 
 2. **Check for legacy config** at `~/.claude/team-pulse-config.yaml`
-   - If exists without dcs-config: "Found legacy team-pulse config. Want to migrate it?"
+   - If exists without do-config: "Found legacy team-pulse config. Want to migrate it?"
    - Options: `Migrate to new format` | `Start fresh`
 
 3. **Check existing skills** at `~/.claude/skills/`
@@ -522,14 +522,14 @@ Generate personalized configuration:
 ### Backup Existing
 
 ```bash
-if [ -f ~/.claude/dcs-config.yaml ]; then
-  cp ~/.claude/dcs-config.yaml ~/.claude/dcs-config.yaml.bak
+if [ -f ~/.claude/do-config.yaml ]; then
+  cp ~/.claude/do-config.yaml ~/.claude/do-config.yaml.bak
 fi
 ```
 
 ### Generate Config
 
-Write to `~/.claude/dcs-config.yaml` using the v2 schema:
+Write to `~/.claude/do-config.yaml` using the v2 schema:
 
 ```yaml
 version: "2.0"
@@ -650,7 +650,7 @@ Display checklist as tests complete:
 
 ```markdown
 **Configuration:**
-- [x] Config file created at ~/.claude/dcs-config.yaml
+- [x] Config file created at ~/.claude/do-config.yaml
 - [x] Config syntax valid (v2.0)
 
 **Operations Pillar:**
@@ -677,7 +677,7 @@ Display checklist as tests complete:
 ```markdown
 ## Setup Complete!
 
-Design Company Skills is configured and ready.
+DESIGN-OPS is configured and ready.
 
 ### Try These Commands
 - `/do:daily-brief` — Morning overview

@@ -1,6 +1,6 @@
 # /do:add-tool
 
-Guided setup for adding a new tool to Design Company Skills. Uses the evaluation cascade to determine the best connection method.
+Guided setup for adding a new tool to DESIGN-OPS. Uses the evaluation cascade to determine the best connection method.
 
 ## Trigger
 
@@ -177,7 +177,7 @@ After token entry, validate and store.
 ## {Tool} — Needs Custom Wrapper
 
 {Tool} has an API that can provide reporting data, but needs
-an MCP wrapper to integrate with Design Company Skills.
+an MCP wrapper to integrate with DESIGN-OPS.
 
 **What this means:**
 - We'll create a simple MCP server that wraps {Tool}'s API
@@ -257,7 +257,7 @@ If not obvious from tool type:
 
 ## Step 5: Update Configuration
 
-Write changes to `~/.claude/dcs-config.yaml`:
+Write changes to `~/.claude/do-config.yaml`:
 
 ```yaml
 pillars:

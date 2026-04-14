@@ -61,7 +61,7 @@ claude plugin add ~/DESIGN-OPS
 
 ## Commands
 
-All commands use the `/do:` prefix (Design Company Skills).
+All commands use the `/do:` prefix (DESIGN-OPS).
 
 ### System Commands
 
@@ -145,7 +145,7 @@ Skills activate automatically based on context — no command needed.
 
 ## Three-Pillar Configuration
 
-DESIGN-OPS uses a pillar-based config stored at `~/.claude/dcs-config.yaml`:
+DESIGN-OPS uses a pillar-based config stored at `~/.claude/do-config.yaml`:
 
 ```yaml
 pillars:

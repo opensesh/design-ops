@@ -1,6 +1,6 @@
 # Tool Registry
 
-Known tools database for Design Company Skills. Contains MCP availability, API capabilities, and reporting potential for each tool.
+Known tools database for DESIGN-OPS. Contains MCP availability, API capabilities, and reporting potential for each tool.
 
 ---
 

@@ -1,6 +1,6 @@
 ---
-# Design Company Skills - Project-Local Configuration
-# This file should be placed at: .claude/design-company-skills.local.md
+# DESIGN-OPS - Project-Local Configuration
+# This file should be placed at: .claude/design-ops.local.md
 # Add to .gitignore: .claude/*.local.md
 
 # Project identification

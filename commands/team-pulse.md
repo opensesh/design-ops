@@ -58,7 +58,7 @@ See `/do:dashboard` for full documentation on pillar and timeframe options.
 
 ## Prerequisites
 
-For best results, configure team members in `~/.claude/dcs-config.yaml`:
+For best results, configure team members in `~/.claude/do-config.yaml`:
 
 ```yaml
 team:
