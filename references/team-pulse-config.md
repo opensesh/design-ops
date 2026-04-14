@@ -85,11 +85,11 @@ github:
 
 team:
   members:
-    - name: "Sarah"
-      figma_handle: "Sarah Chen"
-      github_username: "sarahc"
-    - name: "Jake"
-      github_username: "jakedev"
+    - name: "Taylor"
+      figma_handle: "Taylor Lee"
+      github_username: "taylorl"
+    - name: "Morgan"
+      github_username: "morgandev"
 
 preferences:
   activity_window_hours: 24

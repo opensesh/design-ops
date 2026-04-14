@@ -1,4 +1,4 @@
-# Design Company Skills Configuration
+# Design Company Skills Configuration v2.0
 # Copy this to ~/.claude/dcs-config.yaml and fill in your values
 #
 # Setup: Run /dcs:setup for guided configuration
@@ -7,99 +7,223 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # METADATA
 # ─────────────────────────────────────────────────────────────────────────────
-version: 1.0
+version: "2.0"
 created: ""      # ISO date, set by /dcs:setup
 updated: ""      # ISO date, updated on changes
 
 # ─────────────────────────────────────────────────────────────────────────────
-# FIGMA INTEGRATION (for design activity tracking)
+# THREE PILLARS
 # ─────────────────────────────────────────────────────────────────────────────
-# Get your token: https://www.figma.com/developers/api#access-tokens
-# 1. Go to Figma → Settings → Account → Personal access tokens
-# 2. Generate a new token with "File content" scope
+# Each pillar contains:
+#   - enabled: whether this pillar is active
+#   - tools: connected data sources with capability matrices
+#   - outcomes: what data to include in briefs/recaps
 #
-figma:
-  enabled: false
-  api_token: ""  # Your Figma personal access token
+# Tool connection types:
+#   - mcp: Native MCP server (ideal)
+#   - api: Direct API integration (plugin handles calls)
+#   - custom_wrapper: User-created MCP wrapper
+#   - unavailable: Tool has no API or MCP support
 
-  # Projects to track (get project ID from Figma URL)
-  # Example: figma.com/files/project/123456789 → id is "123456789"
-  tracked_projects:
-    - id: ""
-      name: ""
-    # - id: ""
-    #   name: ""
+pillars:
+  # ───────────────────────────────────────────────────────────────────────────
+  # OPERATIONS — Coordination, scheduling, task management
+  # ───────────────────────────────────────────────────────────────────────────
+  operations:
+    enabled: false
+    tools:
+      # Notion example (MCP)
+      # - id: notion
+      #   type: mcp
+      #   mcp_name: "notion"
+      #   status: connected  # connected | needs_setup | unavailable
+      #   capabilities:
+      #     data_types: [pages, databases, tasks, comments]
+      #     reporting:
+      #       daily: [recent_pages, task_counts]
+      #       weekly: [page_activity, task_completion]
+      #       monthly: [content_growth]
 
-  # Or track specific files directly (get file key from URL)
-  # Example: figma.com/design/ABC123xyz/... → key is "ABC123xyz"
-  tracked_files:
-    - key: ""
-      name: ""
-    # - key: ""
-    #   name: ""
+      # Google Workspace example (MCP)
+      # - id: google_workspace
+      #   type: mcp
+      #   mcp_name: "google-workspace"
+      #   status: connected
+      #   capabilities:
+      #     data_types: [calendar, gmail, drive]
+      #     reporting:
+      #       daily: [todays_events, unread_emails]
+      #       weekly: [event_count, email_volume]
 
-# ─────────────────────────────────────────────────────────────────────────────
-# GITHUB INTEGRATION (for development activity tracking)
-# ─────────────────────────────────────────────────────────────────────────────
-# Uses your existing GitHub MCP connection - no token needed here
-#
-github:
-  enabled: false
+      # Linear example (MCP)
+      # - id: linear
+      #   type: mcp
+      #   mcp_name: "linear"
+      #   status: needs_setup
+      #   capabilities:
+      #     data_types: [issues, projects, cycles]
+      #     reporting:
+      #       daily: [issues_due, assigned_issues]
+      #       weekly: [issues_completed, cycle_progress]
 
-  # Repositories to track (owner/repo format)
-  tracked_repos:
-    - owner: ""
-      repo: ""
-    # - owner: ""
-    #   repo: ""
+      # Slack example (MCP)
+      # - id: slack
+      #   type: mcp
+      #   mcp_name: "slack"
+      #   status: connected
+      #   capabilities:
+      #     data_types: [messages, channels]
+      #     reporting:
+      #       daily: [unread_counts, recent_messages]
+      #       weekly: [channel_activity]
 
-# ─────────────────────────────────────────────────────────────────────────────
-# SLACK INTEGRATION (optional)
-# ─────────────────────────────────────────────────────────────────────────────
-# Uses your existing Slack MCP connection if available
-#
-slack:
-  enabled: false
+    # What to include in daily/weekly/monthly outputs
+    outcomes:
+      daily: []
+        # - calendar_events      # Today's meetings (from google_workspace)
+        # - tasks_due            # Tasks due today (from notion/linear)
+        # - unread_emails        # Unread emails (from google_workspace)
+        # - unread_messages      # Unread Slack messages (from slack)
+      weekly: []
+        # - week_overview        # Events attended (from google_workspace)
+        # - tasks_completed      # Tasks done this week (from notion/linear)
+        # - team_activity        # Team communication (from slack)
+      monthly: []
+        # - project_status       # Project progress (from notion/linear)
 
-  # Channels to include in daily briefs
-  tracked_channels:
-    # - name: "general"
-    # - name: "design"
+  # ───────────────────────────────────────────────────────────────────────────
+  # DESIGN — Creative work, code, visual assets
+  # ───────────────────────────────────────────────────────────────────────────
+  design:
+    enabled: false
+    tools:
+      # GitHub example (MCP)
+      # - id: github
+      #   type: mcp
+      #   mcp_name: "github"
+      #   status: connected
+      #   capabilities:
+      #     data_types: [repos, commits, prs, issues]
+      #     reporting:
+      #       daily: [recent_commits, open_prs]
+      #       weekly: [team_contributions, pr_activity]
+      #       monthly: [merge_stats]
+      #   tracked_repos:
+      #     - owner: "opensesh"
+      #       repo: "webapp"
+
+      # Figma example (API - MCP exists but is code-focused)
+      # - id: figma
+      #   type: api
+      #   auth:
+      #     token_env: FIGMA_API_TOKEN  # or token: "figd_xxx"
+      #   status: connected
+      #   capabilities:
+      #     data_types: [files, versions, comments, users]
+      #     reporting:
+      #       daily: [files_edited, active_users]
+      #       weekly: [design_versions, comment_activity]
+      #       monthly: [project_progress]
+      #   tracked_projects:
+      #     - id: "123456789"
+      #       name: "Design System"
+      #   tracked_files: []
+
+      # GitLab example (MCP)
+      # - id: gitlab
+      #   type: mcp
+      #   mcp_name: "gitlab"
+      #   status: needs_setup
+      #   capabilities:
+      #     data_types: [repos, commits, merge_requests]
+
+    outcomes:
+      daily: []
+        # - recent_commits       # Last 24h commits (from github/gitlab)
+        # - open_prs             # PRs needing review (from github/gitlab)
+        # - design_updates       # Figma files edited (from figma)
+        # - active_users         # Who's working on what (from figma)
+      weekly: []
+        # - team_contributions   # Commits by person (from github/gitlab)
+        # - design_versions      # Versions created (from figma)
+        # - pr_activity          # PRs merged (from github/gitlab)
+      monthly: []
+        # - design_progress      # Project completion (from figma)
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # ANALYTICS — Metrics, insights, reporting
+  # ───────────────────────────────────────────────────────────────────────────
+  analytics:
+    enabled: false
+    tools:
+      # Google Analytics example (MCP)
+      # - id: google_analytics
+      #   type: mcp
+      #   mcp_name: "ga4"
+      #   status: connected
+      #   capabilities:
+      #     data_types: [pageviews, sessions, events, goals]
+      #     reporting:
+      #       daily: [session_count, top_pages]
+      #       weekly: [traffic_trends, source_breakdown]
+      #       monthly: [month_comparison]
+
+      # Dub.co example (MCP)
+      # - id: dubco
+      #   type: mcp
+      #   mcp_name: "dubco"
+      #   status: connected
+      #   capabilities:
+      #     data_types: [links, clicks, referrers, geo]
+      #     reporting:
+      #       daily: [click_counts]
+      #       weekly: [top_links, referrer_breakdown]
+
+      # Substack example (custom wrapper - no official MCP)
+      # - id: substack
+      #   type: custom_wrapper
+      #   mcp_name: "substack-wrapper"  # User-created MCP
+      #   status: connected
+      #   capabilities:
+      #     data_types: [subscribers, posts, email_stats]
+      #     reporting:
+      #       daily: [new_subscribers]
+      #       weekly: [subscriber_growth, post_views]
+
+      # Instagram example (unavailable - API too limited)
+      # - id: instagram
+      #   type: unavailable
+      #   status: skipped
+      #   reason: "API limited to business accounts, restricted data access"
+
+    outcomes:
+      daily: []
+        # - pageviews            # Today's page views (from google_analytics)
+        # - link_clicks          # Click counts (from dubco)
+        # - new_subscribers      # New subscribers (from substack)
+      weekly: []
+        # - traffic_trends       # Traffic patterns (from google_analytics)
+        # - top_links            # Best performing links (from dubco)
+        # - audience_growth      # Subscriber growth (from substack)
+      monthly: []
+        # - month_comparison     # Month-over-month (from google_analytics)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # TEAM MEMBERS (optional - for cleaner output)
 # ─────────────────────────────────────────────────────────────────────────────
 # Map platform handles to friendly names for better readability
-#
 team:
-  members:
-    - name: ""
-      figma_handle: ""      # Their name as it appears in Figma
-      github_username: ""   # Their GitHub username
-      slack_username: ""    # Their Slack display name (optional)
-    # - name: ""
-    #   figma_handle: ""
-    #   github_username: ""
-
-# ─────────────────────────────────────────────────────────────────────────────
-# WORKFLOW PREFERENCES
-# ─────────────────────────────────────────────────────────────────────────────
-# Enable/disable specific workflows
-#
-workflows:
-  daily:
-    - morning_brief
-    - meeting_prep
-  weekly:
-    - weekly_recap
-  team:
-    - team_pulse
-  as_needed:
-    - design_feedback
-    - brand_guidelines
-    - devils_advocate
-    - site_analysis
-    - social_post
+  members: []
+    # - name: "Jordan Smith"
+    #   handles:
+    #     figma: "jordan.smith"
+    #     github: "jordansmith"
+    #     notion: "Jordan Smith"
+    #     slack: "jordan"
+    # - name: "Taylor Lee"
+    #   handles:
+    #     figma: "taylor.lee"
+    #     github: "taylorl"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # DISPLAY PREFERENCES
@@ -111,23 +235,19 @@ preferences:
   show_versions: true              # Include Figma named versions
 
 # ─────────────────────────────────────────────────────────────────────────────
-# CONNECTED TOOLS (auto-populated by /dcs:setup)
+# ENABLED COMMANDS (auto-computed based on connected tools)
 # ─────────────────────────────────────────────────────────────────────────────
-# This section is automatically updated based on detected MCP servers
-#
-tools_detected:
-  # - name: github
-  #   capabilities: [code_search, pull_requests, issues]
-  # - name: notion
-  #   capabilities: [pages, databases]
-  # - name: google_calendar
-  #   capabilities: [events, reminders]
+# These are computed by /dcs:setup based on what tools are connected
+enabled_commands:
+  # - daily_brief      # requires: any operations tool
+  # - weekly_recap     # requires: any operations tool
+  # - team_pulse       # requires: figma OR github
+  # - analytics        # requires: any analytics tool
 
 # ─────────────────────────────────────────────────────────────────────────────
 # BRAND CONFIGURATION (optional)
 # ─────────────────────────────────────────────────────────────────────────────
 # If using brand-related skills, configure your brand here
-#
 # brand:
 #   name: "Your Company"
 #   voice: "professional, warm, technical"
