@@ -1,12 +1,14 @@
 {
   "name": "design-ops",
   "version": "2.1.0",
-  "description": "DESIGN-OPS toolkit: brand guidelines, design system, team productivity, Figma + GitHub integration",
+  "description": "A Claude Code plugin for design companies and entrepreneurs. Connect your tools, get daily briefs, and track your team across Operations, Design, and Analytics pillars.",
   "author": {
     "name": "Open Session",
-    "url": "https://opensession.ai"
+    "url": "https://opensession.co"
   },
   "repository": "https://github.com/opensesh/DESIGN-OPS",
   "commands_dir": "commands",
-  "skills_dir": "skills"
+  "skills_dir": "skills",
+  "references_dir": "references",
+  "templates_dir": "templates"
 }

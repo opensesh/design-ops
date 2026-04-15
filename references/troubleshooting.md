@@ -15,53 +15,41 @@ Common issues and how to fix them.
 
 1. Exit Claude Code by typing `exit`
 2. Restart Claude: `claude`
-3. Verify the plugin is loaded:
+3. Verify the plugin is installed:
    ```bash
-   claude plugin list
+   ls .claude/plugins/design-ops
    ```
-   You should see `company-skills` in the list.
+   You should see the `commands/`, `skills/`, and `references/` directories.
 
 ---
 
 ## Plugin not found error
 
-### Check the folder exists
-
-**Mac:**
-```bash
-ls ~/company-skills
-```
-
-**Windows:**
-```powershell
-dir %USERPROFILE%\company-skills
-```
-
-If the folder doesn't exist, re-download or re-clone:
-
-**Download method:**
-1. Download: [company-skills ZIP](https://github.com/opensesh/company-skills/archive/refs/heads/main.zip)
-2. Extract to a memorable location (e.g., `Documents/company-skills`)
-
-**Git method:**
-```bash
-# Mac/Linux
-git clone https://github.com/opensesh/company-skills.git ~/company-skills
-
-# Windows
-git clone https://github.com/opensesh/company-skills.git %USERPROFILE%\company-skills
-```
-
-### Re-add the plugin
+### Check the plugin is installed
 
 **Mac/Linux:**
 ```bash
-claude plugin add ~/company-skills
+ls .claude/plugins/design-ops
 ```
 
 **Windows:**
 ```powershell
-claude plugin add %USERPROFILE%\company-skills
+dir .claude\plugins\design-ops
+```
+
+If the folder doesn't exist, re-run the install script:
+
+### Re-install the plugin
+
+**Option 1: Terminal**
+```bash
+git clone https://github.com/opensesh/DESIGN-OPS
+bash DESIGN-OPS/.design-ops/install.sh ./my-project
+```
+
+**Option 2: Claude Code**
+```
+Clone github.com/opensesh/DESIGN-OPS and run the install script to set up DESIGN-OPS in this project.
 ```
 
 ---
@@ -163,20 +151,21 @@ chmod 755 ~/.claude
 
 ### Plugin folder is read-only
 
-If you downloaded the ZIP, some systems mark extracted files as read-only. Fix with:
+If files are marked as read-only after installation, fix with:
 
 **Mac/Linux:**
 ```bash
-chmod -R 755 ~/company-skills
+chmod -R 755 .claude/plugins/design-ops
 ```
 
 ---
 
 ## Still stuck?
 
-1. **Check the [GitHub Issues](https://github.com/opensesh/company-skills/issues)** — your problem might already be solved
+1. **Check the [GitHub Issues](https://github.com/opensesh/DESIGN-OPS/issues)** — your problem might already be solved
 2. **Open a new issue** with:
    - What you tried
    - What happened
    - Your OS (Mac, Windows, Linux)
-   - How you installed (Desktop or Terminal)
+   - How you installed (Terminal or Claude Code)
+3. **Email:** [hello@opensession.co](mailto:hello@opensession.co)

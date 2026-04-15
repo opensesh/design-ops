@@ -16,6 +16,7 @@ Browse and discover utility commands organized by category.
 | `logistics` | Meeting prep, kickoffs, and project coordination |
 | `content` | Content creation for social and marketing |
 | `development` | Research, analysis, and ideation tools |
+| `design` | Design quality, research, and variation tools |
 | omitted | Show all categories |
 
 ---
@@ -33,13 +34,13 @@ Browse and discover utility commands organized by category.
 Display commands grouped by category:
 
 ```markdown
-## DESIGN-OPS Utility Library
+## DESIGN-OPS Utility Library (14 commands)
 
 Ad-hoc commands organized by purpose. Use any command directly.
 
 ---
 
-### Logistics
+### Logistics (3)
 *Meeting prep, kickoffs, and project coordination*
 
 | Command | Description |
@@ -50,22 +51,38 @@ Ad-hoc commands organized by purpose. Use any command directly.
 
 ---
 
-### Content
+### Content (3)
 *Content creation for social and marketing*
 
 | Command | Description |
 |---------|-------------|
-| `/do:social-post` | Create platform-optimized social content (LinkedIn, Instagram, Substack) |
+| `/do:social-post` | Create platform-optimized social content |
+| `/do:copy-variants` | Generate and A/B test copy variations |
+| `/do:content-brief` | Create content briefs for articles, blogs, case studies |
 
 ---
 
-### Development
+### Development (3)
 *Research, analysis, and ideation tools*
 
 | Command | Description |
 |---------|-------------|
-| `/do:site-analysis` | Deep website analysis with structure mapping and component detection |
+| `/do:site-analysis` | Deep website analysis with structure mapping |
 | `/do:devils-advocate` | Challenge assumptions and stress-test your thinking |
+| `/do:research-summary` | Synthesize research into actionable insights |
+
+---
+
+### Design (5)
+*Design quality, research, and variation tools*
+
+| Command | Description |
+|---------|-------------|
+| `/do:design-audit` | Automated design system compliance check |
+| `/do:a11y-audit` | Accessibility compliance check (WCAG A/AA/AAA) |
+| `/do:mood-board` | Curated design inspiration from web sources |
+| `/do:competitor-scan` | Competitive design analysis |
+| `/do:variation-sprint` | Generate design variations within brand constraints |
 
 ---
 
@@ -73,6 +90,7 @@ Run any command by name, or browse a specific category:
 - `/do:library logistics`
 - `/do:library content`
 - `/do:library development`
+- `/do:library design`
 ```
 
 ---
@@ -100,7 +118,7 @@ Show only that category:
 
 ---
 
-**Other categories:** content, development
+**Other categories:** content, development, design
 
 Run `/do:library` to see all categories.
 ```
@@ -118,6 +136,7 @@ Available categories:
 - **logistics** — Meeting prep, kickoffs, and project coordination
 - **content** — Content creation for social and marketing
 - **development** — Research, analysis, and ideation tools
+- **design** — Design quality, research, and variation tools
 
 Run `/do:library` to see all commands.
 ```
@@ -129,12 +148,13 @@ Run `/do:library` to see all commands.
 The library reads from `commands/library/_registry.yaml`:
 
 ```yaml
-version: "1.0"
+version: "2.0"
 
 categories:
   logistics: "Meeting prep, kickoffs, and project coordination"
   content: "Content creation for social and marketing"
   development: "Research, analysis, and ideation tools"
+  design: "Design quality, research, and variation tools"
 
 commands:
   - id: meeting-brief
@@ -143,7 +163,7 @@ commands:
     description: "Create focused meeting agendas"
     trigger: "/do:meeting-brief"
     tags: [meetings, planning, preparation]
-  # ... more commands
+  # ... more commands (14 total)
 ```
 
 ---
@@ -190,4 +210,4 @@ To add a command to the library:
 
 ---
 
-*Version: 1.0*
+*Version: 2.0*
