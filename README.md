@@ -106,27 +106,39 @@ The unified dashboard generates reports across pillars and timeframes:
 | `/do:weekly-recap` | `/do:dashboard weekly` |
 | `/do:team-pulse` | `/do:dashboard design daily` |
 
-### Utility Library
+### Utility Library (14 commands)
 
-Browse with `/do:library`. Organized by category:
+Browse with `/do:library` or filter by category: `/do:library design`
 
-**Logistics** — Meeting prep, kickoffs, project coordination
+**Logistics (3)** — Meeting prep, kickoffs, project coordination
 | Command | Purpose |
 |---------|---------|
 | `/do:meeting-brief` | Create focused meeting agendas |
 | `/do:meeting-recap` | Document meetings with action items |
 | `/do:kickoff-prep` | Generate project kickoff materials |
 
-**Content** — Content creation for social and marketing
+**Content (3)** — Content creation for social and marketing
 | Command | Purpose |
 |---------|---------|
 | `/do:social-post` | Create platform-optimized social content |
+| `/do:copy-variants` | Generate and A/B test copy variations |
+| `/do:content-brief` | Create content briefs for articles, blogs, case studies |
 
-**Development** — Research, analysis, and ideation tools
+**Development (3)** — Research, analysis, and ideation tools
 | Command | Purpose |
 |---------|---------|
 | `/do:site-analysis` | Deep website analysis |
 | `/do:devils-advocate` | Challenge assumptions |
+| `/do:research-summary` | Synthesize research into actionable insights |
+
+**Design (5)** — Design quality, research, and variation tools
+| Command | Purpose |
+|---------|---------|
+| `/do:design-audit` | Automated design system compliance check |
+| `/do:a11y-audit` | Accessibility compliance check (WCAG A/AA/AAA) |
+| `/do:mood-board` | Curated design inspiration from web sources |
+| `/do:competitor-scan` | Competitive design analysis |
+| `/do:variation-sprint` | Generate design variations within brand constraints |
 
 ---
 
@@ -136,10 +148,14 @@ Skills activate automatically based on context — no command needed.
 
 | Skill | Triggers On |
 |-------|-------------|
-| `brand-guidelines` | Brand colors, voice, identity work |
-| `frontend-design` | UI components, layouts |
-| `design-system-quality` | Code reviews, design compliance |
-| `tool-evaluator` | MCP/API capability assessment |
+| `brand-guidelines` | Brand colors (Aperol, Charcoal, Vanilla), voice, identity |
+| `frontend-design` | UI components, layouts, design implementation |
+| `design-system-quality` | Design system reviews, token validation |
+| `brand-voice` | Content writing, copywriting, messaging |
+| `design-feedback` | Design critique, visual review |
+| `accessibility-audit` | Accessibility checks, a11y reviews |
+| `systematic-debugging` | Debugging, error investigation |
+| `verification-before-completion` | Task completion, claiming "done" |
 
 ---
 
