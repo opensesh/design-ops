@@ -257,7 +257,7 @@ If not obvious from tool type:
 
 ## Step 5: Update Configuration
 
-Write changes to `~/.claude/do-config.yaml`:
+Write changes to `~/.claude/design-ops-config.yaml`:
 
 ```yaml
 pillars:

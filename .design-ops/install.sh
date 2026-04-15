@@ -172,7 +172,7 @@ Global installation of [DESIGN-OPS](https://github.com/opensesh/DESIGN-OPS) for 
 
 ### Configuration
 
-Config file: `~/.claude/do-config.yaml`
+Config file: `~/.claude/design-ops-config.yaml`
 
 Run `/design-ops:setup` for guided configuration.
 <!-- DESIGN-OPS:END -->

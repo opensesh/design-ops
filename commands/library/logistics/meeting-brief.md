@@ -10,11 +10,11 @@ User invokes `/meeting-brief` before an upcoming meeting to prepare an effective
 
 ## Config-Aware Behavior
 
-This command adapts based on the user's setup in `~/.claude/do-config.yaml`.
+This command adapts based on the user's setup in `~/.claude/design-ops-config.yaml`.
 
 ### Check Available Resources
 
-1. **Read user config** at `~/.claude/do-config.yaml`
+1. **Read user config** at `~/.claude/design-ops-config.yaml`
 2. **Check MCP connections** for Calendar
 3. **Adapt workflow** — fetch meeting details if available, otherwise ask
 

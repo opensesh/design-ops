@@ -36,14 +36,14 @@ if (web/co-work environment detected):
 
 ### 2. Check Existing Configuration
 
-1. **Check for existing config** at `~/.claude/do-config.yaml`
+1. **Check for existing config** at `~/.claude/design-ops-config.yaml`
    - If exists, check version field
    - If v1.x: "Found v1 config. Want to migrate to the new pillar-based format?"
    - If v2.x: "You have an existing config. What would you like to do?"
    - Options: `Update existing` | `Start fresh` | `Just show status`
 
 2. **Check for legacy config** at `~/.claude/team-pulse-config.yaml`
-   - If exists without do-config: "Found legacy team-pulse config. Want to migrate it?"
+   - If exists without design-ops-config: "Found legacy team-pulse config. Want to migrate it?"
    - Options: `Migrate to new format` | `Start fresh`
 
 3. **Check existing skills** at `~/.claude/skills/`
@@ -588,14 +588,14 @@ Generate personalized configuration:
 ### Backup Existing
 
 ```bash
-if [ -f ~/.claude/do-config.yaml ]; then
-  cp ~/.claude/do-config.yaml ~/.claude/do-config.yaml.bak
+if [ -f ~/.claude/design-ops-config.yaml ]; then
+  cp ~/.claude/design-ops-config.yaml ~/.claude/design-ops-config.yaml.bak
 fi
 ```
 
 ### Generate Config
 
-Write to `~/.claude/do-config.yaml` using the v2 schema:
+Write to `~/.claude/design-ops-config.yaml` using the v2 schema:
 
 ```yaml
 version: "2.0"
@@ -716,7 +716,7 @@ Display checklist as tests complete:
 
 ```markdown
 **Configuration:**
-- [x] Config file created at ~/.claude/do-config.yaml
+- [x] Config file created at ~/.claude/design-ops-config.yaml
 - [x] Config syntax valid (v2.0)
 
 **Operations Pillar:**
@@ -777,7 +777,7 @@ These work automatically when relevant — no command needed:
 - **systematic-debugging** — Triggers on debugging/error investigation
 
 ### Configuration
-- Config file: `~/.claude/do-config.yaml`
+- Config file: `~/.claude/design-ops-config.yaml`
 - View status: `/design-ops:status` — Quick overview of what's configured
 - Diagnose issues: `/design-ops:test` — Deep diagnostics when troubleshooting
 - Update settings: `/design-ops:configure`

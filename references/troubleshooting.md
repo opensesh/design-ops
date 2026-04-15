@@ -82,11 +82,11 @@ mkdir %USERPROFILE%\.claude
 
 ### Config looks wrong
 
-The config lives at `~/.claude/do-config.yaml`. You can:
+The config lives at `~/.claude/design-ops-config.yaml`. You can:
 
 1. View it:
    ```bash
-   cat ~/.claude/do-config.yaml
+   cat ~/.claude/design-ops-config.yaml
    ```
 
 2. Reset it by running `/design-ops:setup` again and choosing "Start fresh"

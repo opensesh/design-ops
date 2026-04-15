@@ -26,7 +26,7 @@ User invokes `/design-ops:design-audit` to check design system compliance for:
 
 Check for design system configuration:
 
-1. **Read** `~/.claude/do-config.yaml` for design system tokens
+1. **Read** `~/.claude/design-ops-config.yaml` for design system tokens
 2. **Check** for project-local `references/design-system.md`
 3. **Fall back** to Open Session defaults if no custom system
 

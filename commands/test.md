@@ -27,7 +27,7 @@ Running verification tests...
 ```
 
 **Test 1: Config file exists**
-- Check: `~/.claude/do-config.yaml` exists
+- Check: `~/.claude/design-ops-config.yaml` exists
 - Pass: `[x] Config file exists`
 - Fail: `[ ] Config file not found — run /design-ops:setup`
 

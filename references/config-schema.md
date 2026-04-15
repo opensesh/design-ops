@@ -15,7 +15,7 @@ Complete reference for the DESIGN-OPS configuration file.
 
 | File | Purpose | Location |
 |------|---------|----------|
-| Global config | Main configuration | `~/.claude/do-config.yaml` |
+| Global config | Main configuration | `~/.claude/design-ops-config.yaml` |
 | Project config | Per-project overrides | `.claude/design-ops.local.md` |
 | Legacy config | Old team-pulse config (v1) | `~/.claude/team-pulse-config.yaml` |
 
@@ -601,7 +601,7 @@ Check that MCP server responds to basic queries.
 
 ### Config Not Loading
 
-1. Check file exists: `ls ~/.claude/do-config.yaml`
+1. Check file exists: `ls ~/.claude/design-ops-config.yaml`
 2. Check YAML syntax: `python -c "import yaml; yaml.safe_load(open(...))" `
 3. Run `/design-ops:test` for diagnostics
 

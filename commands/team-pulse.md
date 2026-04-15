@@ -58,7 +58,7 @@ See `/design-ops:dashboard` for full documentation on pillar and timeframe optio
 
 ## Prerequisites
 
-For best results, configure team members in `~/.claude/do-config.yaml`:
+For best results, configure team members in `~/.claude/design-ops-config.yaml`:
 
 ```yaml
 team:

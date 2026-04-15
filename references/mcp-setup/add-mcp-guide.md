@@ -189,7 +189,7 @@ Ask Claude something that uses the MCP:
 
 ### Update Your Config
 
-The `/design-ops:setup` command will detect new MCPs. Run it again or use `/design-ops:add-tool` to update your `do-config.yaml`.
+The `/design-ops:setup` command will detect new MCPs. Run it again or use `/design-ops:add-tool` to update your `design-ops-config.yaml`.
 
 ---
 

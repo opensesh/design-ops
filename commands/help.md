@@ -149,7 +149,7 @@ These activate automatically based on context — no command needed:
 
 ## Configuration
 
-Config file: `~/.claude/do-config.yaml`
+Config file: `~/.claude/design-ops-config.yaml`
 
 View current config: `/design-ops:status`
 Update config: `/design-ops:configure`
@@ -199,7 +199,7 @@ If user runs `/design-ops:help {topic}`:
 ```
 
 ### Configuration
-Dashboard reads from `~/.claude/do-config.yaml`:
+Dashboard reads from `~/.claude/design-ops-config.yaml`:
 - Which pillars are enabled
 - Which tools are connected
 - Which outcomes to include

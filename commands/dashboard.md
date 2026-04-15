@@ -52,7 +52,7 @@ Unified dashboard command that generates pillar × timeframe reports from connec
 
 ## Config-Aware Behavior
 
-This command reads from `~/.claude/do-config.yaml` and fetches data based on:
+This command reads from `~/.claude/design-ops-config.yaml` and fetches data based on:
 1. Which pillars are enabled
 2. Which tools are connected in each pillar
 3. Which outcomes are selected for the requested timeframe
@@ -95,7 +95,7 @@ pillars:
 
 ### Step 2: Load Config
 
-1. **Read** `~/.claude/do-config.yaml`
+1. **Read** `~/.claude/design-ops-config.yaml`
 2. **Filter** to requested pillar(s)
 3. **Get** outcomes for requested timeframe
 4. **Map** outcomes to connected tools

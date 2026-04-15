@@ -16,7 +16,7 @@ Can also target specific pillars:
 
 ## Pre-Flight Check
 
-1. **Check for config** at `~/.claude/do-config.yaml`
+1. **Check for config** at `~/.claude/design-ops-config.yaml`
    - If not found: "No config found. Run `/design-ops:setup` first to get started."
    - Exit early
 
@@ -359,7 +359,7 @@ Proceed with these changes?
 
 2. **Backup** current config:
 ```bash
-cp ~/.claude/do-config.yaml ~/.claude/do-config.yaml.bak
+cp ~/.claude/design-ops-config.yaml ~/.claude/design-ops-config.yaml.bak
 ```
 
 3. **Write** updated config

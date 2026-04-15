@@ -1,5 +1,5 @@
 # DESIGN-OPS Configuration v2.0
-# Copy this to ~/.claude/do-config.yaml and fill in your values
+# Copy this to ~/.claude/design-ops-config.yaml and fill in your values
 #
 # Setup: Run /design-ops:setup for guided configuration
 # Docs: https://github.com/opensesh/DESIGN-OPS

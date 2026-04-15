@@ -12,12 +12,12 @@ User runs `/design-ops:status` to see what's configured and working.
 
 ### Step 1: Load Configuration
 
-1. **Read** `~/.claude/do-config.yaml`
+1. **Read** `~/.claude/design-ops-config.yaml`
 2. **If not found:**
    ```markdown
    ## DESIGN-OPS — Not Configured
 
-   No configuration found at ~/.claude/do-config.yaml
+   No configuration found at ~/.claude/design-ops-config.yaml
 
    Run `/design-ops:setup` to get started, or see `/design-ops:help` for available commands.
    ```
@@ -116,7 +116,7 @@ Based on your connected tools:
 
 ### Config Location
 
-`~/.claude/do-config.yaml`
+`~/.claude/design-ops-config.yaml`
 
 ---
 

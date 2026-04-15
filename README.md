@@ -167,7 +167,7 @@ Skills activate automatically based on context — no command needed.
 
 ## Three-Pillar Configuration
 
-DESIGN-OPS uses a pillar-based config stored at `~/.claude/do-config.yaml`:
+DESIGN-OPS uses a pillar-based config stored at `~/.claude/design-ops-config.yaml`:
 
 ```yaml
 pillars:
