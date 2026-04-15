@@ -1,0 +1,14 @@
+{
+  "name": "design-ops",
+  "description": "DESIGN-OPS plugin marketplace",
+  "plugins": [
+    {
+      "name": "design-ops",
+      "description": "Design operations toolkit for design companies",
+      "source": {
+        "type": "local",
+        "path": "."
+      }
+    }
+  ]
+}
