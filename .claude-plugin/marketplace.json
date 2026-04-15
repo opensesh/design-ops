@@ -1,14 +1,18 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "design-ops",
-  "description": "DESIGN-OPS plugin marketplace",
+  "description": "DESIGN-OPS plugin marketplace for design team productivity",
+  "owner": {
+    "name": "Open Session",
+    "email": "hello@opensession.studio"
+  },
   "plugins": [
     {
       "name": "design-ops",
-      "description": "Design operations toolkit for design companies",
-      "source": {
-        "type": "local",
-        "path": "."
-      }
+      "description": "Design operations toolkit for design companies - dashboard, integrations, and utility commands",
+      "source": "./",
+      "category": "productivity",
+      "homepage": "https://github.com/opensesh/DESIGN-OPS"
     }
   ]
 }
