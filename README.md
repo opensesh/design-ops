@@ -31,17 +31,21 @@ DESIGN-OPS connects your existing tools and gives you automated insights across 
 
 ## Quick Start
 
-### Installation
+### Option 1: Terminal
+
+Clone the repo and run the install script from your terminal.
 
 ```bash
-# Clone the plugin
-git clone https://github.com/opensesh/DESIGN-OPS.git ~/DESIGN-OPS
+git clone https://github.com/opensesh/DESIGN-OPS
+bash DESIGN-OPS/.design-ops/install.sh ./my-project
+```
 
-# Add to Claude Code
-claude plugin add ~/DESIGN-OPS
+### Option 2: Claude Code
 
-# Run setup wizard
-/do:setup
+Paste this prompt into Claude Code and it will handle the rest.
+
+```
+Clone github.com/opensesh/DESIGN-OPS and run the install script to set up DESIGN-OPS in this project.
 ```
 
 *Works in Claude Code CLI, desktop app, or IDE extensions.*
