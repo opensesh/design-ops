@@ -230,6 +230,7 @@ For tools without native MCP support, DESIGN-OPS guides you through API wrapper 
 |----------|-------------|
 | [Config Schema](references/config-schema.md) | Complete configuration reference |
 | [Tool Registry](references/tool-registry.md) | Known tools and connection types |
+| [MCP Education](references/mcp-setup/mcp-education.md) | Understanding MCPs, connection status, MCP vs API |
 | [Troubleshooting](references/troubleshooting.md) | Common issues and fixes |
 
 ---

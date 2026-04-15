@@ -111,6 +111,15 @@ What MCPs do I have connected?
 
 Claude will list what's available and what's missing.
 
+**Understanding connection status:**
+| Status | What It Means |
+|--------|---------------|
+| ✓ Connected | Working and ready |
+| ⚠ Available | Installed but needs auth |
+| ○ Not installed | MCP needs to be added |
+
+See [MCP Education](mcp-setup/mcp-education.md) for detailed explanations.
+
 ### Re-authorize a connector
 
 1. Click **+** → **Connectors**
