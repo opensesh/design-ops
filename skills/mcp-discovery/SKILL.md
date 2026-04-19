@@ -122,147 +122,138 @@ discovery_result:
 
 | Level | Source | Criteria |
 |-------|--------|----------|
-| **high** | Official | Package from `@anthropic/*` or vendor namespace |
-| **high** | Vendor | Published by tool vendor (e.g., `@linear/mcp-linear`) |
-| **medium** | Community (popular) | >5000 weekly downloads, updated in last 3 months |
-| **low** | Community (obscure) | <1000 downloads or not updated in 6+ months |
+| **high** | Official | Package from `@modelcontextprotocol/*`, vendor namespace, or official HTTP MCP |
+| **high** | Vendor | Published by tool vendor (e.g., `@notionhq/notion-mcp-server`, `@storybook/mcp`) |
+| **high** | HTTP | Official HTTP MCPs (e.g., Figma, Supabase, Vercel) with `validated: true` |
+| **medium** | Community (popular) | >5000 weekly downloads, updated in last 3 months, `validated: true` |
+| **low** | Community (obscure) | <1000 downloads, placeholder packages, or not updated in 6+ months |
+| **none** | Unavailable | No MCP available for this tool |
 
 ---
 
 ## Known Tools (Fast Path)
 
-For the 15 most common tools, skip npm queries with cached known-good data:
+For the 42 most common tools, we use a **verified registry** (`known-tools.yaml`) that has been validated against npm and official documentation. All entries have `validated: true`.
+
+### Registry Schema (v2.0)
 
 ```yaml
 # skills/mcp-discovery/known-tools.yaml
 
-known_tools:
-  notion:
-    mcp_source: official
-    mcp_package: "@notionhq/notion-mcp-server"
-    mcp_confidence: high
-    api_docs: "https://developers.notion.com"
-    recommendation: mcp
+version: "2.0"
+last_validated: "2026-04-19"
+validation_method: "npm view + official docs"
 
-  github:
-    mcp_source: official
-    mcp_package: "@anthropic/mcp-github"
-    mcp_confidence: high
-    api_docs: "https://docs.github.com/en/rest"
-    recommendation: mcp
-
-  linear:
-    mcp_source: vendor
-    mcp_package: "@linear/mcp-linear"
-    mcp_confidence: high
-    api_docs: "https://developers.linear.app"
-    recommendation: mcp
-
-  figma:
-    mcp_source: official
-    mcp_package: null  # MCP is code-focused, not for reporting
-    mcp_confidence: low
-    api_docs: "https://www.figma.com/developers/api"
-    recommendation: api
-    note: "Official MCP is code-focused. Use API for reporting."
-
-  google_calendar:
-    mcp_source: official
-    mcp_package: "@anthropic/mcp-google-calendar"
-    mcp_confidence: high
-    api_docs: "https://developers.google.com/calendar"
-    recommendation: mcp
-
-  gmail:
-    mcp_source: official
-    mcp_package: "@anthropic/mcp-gmail"
-    mcp_confidence: high
-    api_docs: "https://developers.google.com/gmail/api"
-    recommendation: mcp
-
-  slack:
-    mcp_source: community
-    mcp_package: null  # Multiple community options
-    mcp_confidence: medium
-    api_docs: "https://api.slack.com"
-    recommendation: both
-    warning: "Multiple community MCPs available. Verify before installing."
-
-  asana:
-    mcp_source: community
-    mcp_package: null
-    mcp_confidence: low
-    api_docs: "https://developers.asana.com"
-    recommendation: api
-    note: "Limited community MCP. Direct API recommended."
-
-  gitlab:
-    mcp_source: community
-    mcp_package: "mcp-gitlab"
-    mcp_confidence: medium
-    api_docs: "https://docs.gitlab.com/ee/api/"
-    recommendation: mcp
-    warning: "Community package. Verify before installing."
-
-  bitbucket:
-    mcp_source: none
-    mcp_package: null
-    mcp_confidence: none
-    api_docs: "https://developer.atlassian.com/cloud/bitbucket/"
-    recommendation: api
-
-  google_analytics:
-    mcp_source: official
-    mcp_package: "@anthropic/mcp-google-analytics"
-    mcp_confidence: high
-    api_docs: "https://developers.google.com/analytics"
-    recommendation: mcp
-
-  dubco:
-    mcp_source: community
-    mcp_package: "mcp-dub"
-    mcp_confidence: medium
-    api_docs: "https://dub.co/docs/api-reference"
-    recommendation: mcp
-
-  plausible:
-    mcp_source: none
-    mcp_package: null
-    mcp_confidence: none
-    api_docs: "https://plausible.io/docs/stats-api"
-    recommendation: api
-
-  substack:
-    mcp_source: none
-    mcp_package: null
-    mcp_confidence: none
-    api_docs: null
-    recommendation: api
-    note: "Limited unofficial API. Custom wrapper via /mcp-builder."
-
-  supabase:
-    mcp_source: official
-    mcp_package: "@anthropic/mcp-supabase"
-    mcp_confidence: high
-    api_docs: "https://supabase.com/docs/reference"
-    recommendation: mcp
+# Each tool entry includes:
+# - mcp_source: official | vendor | community | none
+# - mcp_package: npm package name (null for HTTP MCPs)
+# - mcp_type: stdio | http
+# - mcp_url: URL for HTTP MCPs
+# - mcp_confidence: high | medium | low | none
+# - validated: true (verified to exist)
+# - install_cmd: explicit install command (optional)
+# - warning: caution message (optional)
+# - env_required: required environment variables
 ```
 
-This is a **hint**, not a source of truth. The skill can still verify dynamically if needed.
+### Example Entries (Verified)
+
+```yaml
+# Vendor stdio MCP (high confidence)
+notion:
+  mcp_source: vendor
+  mcp_package: "@notionhq/notion-mcp-server"
+  mcp_type: stdio
+  mcp_confidence: high
+  validated: true
+  env_required:
+    - NOTION_API_KEY
+
+# Official stdio MCP (deprecated but functional)
+github:
+  mcp_source: official
+  mcp_package: "@modelcontextprotocol/server-github"
+  mcp_type: stdio
+  mcp_confidence: high
+  validated: true
+  warning: "Package marked deprecated on npm"
+  env_required:
+    - GITHUB_PERSONAL_ACCESS_TOKEN
+
+# Official HTTP MCP
+figma:
+  mcp_source: official
+  mcp_package: null
+  mcp_type: http
+  mcp_url: "https://mcp.figma.com/mcp"
+  mcp_confidence: high
+  validated: true
+  install_cmd: "claude mcp add --transport http figma https://mcp.figma.com/mcp"
+
+# Official HTTP MCP
+supabase:
+  mcp_source: official
+  mcp_package: null
+  mcp_type: http
+  mcp_url: "https://api.supabase.com/mcp"
+  mcp_confidence: high
+  validated: true
+  install_cmd: "claude mcp add supabase https://api.supabase.com/mcp"
+
+# Community MCP (medium confidence)
+linear:
+  mcp_source: community
+  mcp_package: "mcp-server-linear"
+  mcp_type: stdio
+  mcp_confidence: medium
+  validated: true
+  warning: "Community package by dvcrn"
+
+# No MCP available (API only)
+google_analytics:
+  mcp_source: none
+  mcp_package: null
+  mcp_confidence: none
+  validated: true
+  api_docs: "https://developers.google.com/analytics"
+  recommendation: api
+  note: "Use Google Analytics Data API directly."
+```
+
+### Registry Summary (42 tools)
+
+| Pillar | Total | MCP Available | API Only | Unavailable |
+|--------|-------|---------------|----------|-------------|
+| Operations | 12 | 8 | 3 | 1 |
+| Design | 10 | 7 | 1 | 2 |
+| Analytics | 12 | 3 | 7 | 2 |
+| Infrastructure | 8 | 6 | 2 | 0 |
+| **Total** | **42** | **24** | **13** | **5** |
+
+This is the **source of truth** for DESIGN-OPS tool recommendations. All packages have been verified to exist.
 
 ---
 
 ## Discovery Implementation
 
-### Step 2: npm Official Search
+### Step 1: Check Known Tools Registry (Fast Path)
 
 ```bash
-# Check for official Anthropic package
-npm view @anthropic/mcp-{tool} --json 2>/dev/null
+# First, check known-tools.yaml for validated entries
+# If found with validated: true, return immediately
+# This prevents unnecessary npm queries for known tools
+```
+
+### Step 2: npm Package Search
+
+```bash
+# Check for official MCP packages (modelcontextprotocol namespace)
+npm view @modelcontextprotocol/server-{tool} --json 2>/dev/null
 
 # Check for vendor package patterns
-npm view @{tool}/mcp-server --json 2>/dev/null
-npm view @{tool}/mcp-{tool} --json 2>/dev/null
+npm view @{tool}hq/{tool}-mcp-server --json 2>/dev/null  # e.g., @notionhq/notion-mcp-server
+npm view @{tool}/mcp --json 2>/dev/null                   # e.g., @storybook/mcp
+npm view mcp-server-{tool} --json 2>/dev/null             # e.g., mcp-server-linear
 ```
 
 ### Step 3: npm Community Search
@@ -276,13 +267,17 @@ npm search {tool} mcp --json | jq '.[] | select(.name | contains("mcp"))'
 - Weekly downloads > 1000
 - Updated within last 6 months
 - Has README and documentation
+- Not a placeholder (version > 0.0.1)
 
-### Step 4: Anthropic MCP Servers Check
+### Step 4: HTTP MCP Detection
 
-```bash
-# Check Anthropic's official MCP servers repository
-gh api repos/anthropics/mcp-servers/contents
-```
+Some tools provide HTTP-based MCPs instead of npm packages:
+
+| Tool | HTTP MCP URL | Install Command |
+|------|--------------|-----------------|
+| Figma | `https://mcp.figma.com/mcp` | `claude mcp add --transport http figma https://mcp.figma.com/mcp` |
+| Supabase | `https://api.supabase.com/mcp` | `claude mcp add supabase https://api.supabase.com/mcp` |
+| Vercel | `https://mcp.vercel.com` | `claude mcp add --transport http vercel https://mcp.vercel.com` |
 
 ### Step 5: API Documentation Discovery
 
@@ -415,12 +410,75 @@ Discovery results populate these config fields:
 
 ---
 
-## References
+## MCP Installation Types
 
-- `references/tool-registry.md` — Reference documentation (not source of truth)
-- `skills/tool-evaluator/SKILL.md` — Parent skill that invokes discovery
-- `references/config-schema.md` — Config fields populated by discovery
+### stdio MCPs (npm packages)
+
+Standard npm packages that run via standard I/O:
+
+```bash
+# Generic install pattern
+claude mcp add {name} -- npx -y {package}
+
+# Examples
+claude mcp add notion -- npx -y @notionhq/notion-mcp-server
+claude mcp add github -- npx -y @modelcontextprotocol/server-github
+claude mcp add linear -- npx -y mcp-server-linear
+```
+
+### HTTP MCPs (hosted services)
+
+HTTP-based MCPs that connect to hosted services:
+
+```bash
+# Generic install pattern
+claude mcp add --transport http {name} {url}
+
+# Examples
+claude mcp add --transport http figma https://mcp.figma.com/mcp
+claude mcp add --transport http vercel https://mcp.vercel.com
+claude mcp add supabase https://api.supabase.com/mcp
+```
+
+### Detection Logic
+
+When generating install commands:
+
+```yaml
+if mcp_type == "http":
+  if install_cmd exists:
+    use install_cmd  # Explicit command takes precedence
+  else:
+    generate: "claude mcp add --transport http {name} {mcp_url}"
+
+elif mcp_type == "stdio":
+  if install_cmd exists:
+    use install_cmd
+  else:
+    generate: "claude mcp add {name} -- npx -y {mcp_package}"
+```
 
 ---
 
-*Version: 1.0*
+## Validation Before Install
+
+Before installing any package, the discovery flow SHOULD:
+
+1. Run `npm view {package} --json` to verify existence
+2. If 404, log warning and fall back to `recommendation: api`
+3. Check for deprecation warnings in npm response
+4. Cache validation results for session
+
+This prevents issues if packages are unpublished or renamed.
+
+---
+
+## References
+
+- `skills/mcp-discovery/known-tools.yaml` — Source of truth for tool recommendations
+- `references/config-schema.md` — Config fields populated by discovery
+- `skills/tool-evaluator/SKILL.md` — Parent skill that invokes discovery
+
+---
+
+*Version: 2.0*

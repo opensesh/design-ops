@@ -130,8 +130,12 @@ tools:
 
     # Discovery metadata (populated by mcp-discovery skill)
     mcp_source: string      # official | vendor | community | none
-    mcp_package: string     # npm package name (e.g., "@notionhq/notion-mcp-server")
+    mcp_package: string     # npm package name (e.g., "@notionhq/notion-mcp-server") - null for HTTP MCPs
+    mcp_type: string        # stdio | http - how the MCP connects
+    mcp_url: string         # URL for HTTP MCPs (e.g., "https://mcp.figma.com/mcp")
     mcp_confidence: string  # high | medium | low
+    validated: boolean      # Whether package was verified to exist
+    install_cmd: string     # Explicit install command (optional, for non-standard installs)
     discovery_cached: string # ISO date when discovery was cached (optional)
 
     # For API connections
@@ -198,18 +202,26 @@ tools:
 
 | Source | Description |
 |--------|-------------|
-| `official` | Published by Anthropic (e.g., `@anthropic/mcp-*`) |
-| `vendor` | Published by tool vendor (e.g., `@linear/mcp-linear`) |
+| `official` | Published by MCP protocol maintainers (`@modelcontextprotocol/*`) or tool vendor via HTTP |
+| `vendor` | Published by tool vendor (e.g., `@notionhq/notion-mcp-server`, `@storybook/mcp`) |
 | `community` | Community-maintained package |
 | `none` | No MCP available |
+
+### MCP Type Values
+
+| Type | Description | Install Command |
+|------|-------------|-----------------|
+| `stdio` | Standard I/O transport (npm packages) | `claude mcp add {name} -- npx -y {package}` |
+| `http` | HTTP transport (hosted services) | `claude mcp add --transport http {name} {url}` |
 
 ### MCP Confidence Values
 
 | Confidence | Criteria |
 |------------|----------|
-| `high` | Official or vendor package, verified working |
-| `medium` | Community package with >5000 weekly downloads, updated recently |
-| `low` | Community package with low downloads or not recently updated |
+| `high` | Official or vendor package, `validated: true`, verified working |
+| `medium` | Community package with >5000 weekly downloads, updated recently, `validated: true` |
+| `low` | Community package with low downloads, placeholder, or not recently updated |
+| `none` | No MCP available for this tool |
 
 ---
 
@@ -301,36 +313,84 @@ For tools where MCP provides basic access but API unlocks richer reporting:
 - Both are optional — MCP-only is always valid
 - User was offered the API upgrade during setup via progressive disclosure
 
-### API Connection (Figma)
+### HTTP MCP Connection (Figma)
 
 ```yaml
 - id: figma
-  type: api
-  status: connected  # api_only when first discovered, connected after token setup
+  type: mcp
+  mcp_name: "figma"
+  status: connected
 
-  # Discovery metadata - MCP exists but is code-focused
+  # Discovery metadata - HTTP-based MCP
   mcp_source: official
-  mcp_package: null  # Not used for reporting
-  mcp_confidence: low
+  mcp_package: null  # HTTP MCPs don't use npm packages
+  mcp_type: http
+  mcp_url: "https://mcp.figma.com/mcp"
+  mcp_confidence: high
+  validated: true
+  install_cmd: "claude mcp add --transport http figma https://mcp.figma.com/mcp"
   api_docs_url: "https://www.figma.com/developers/api"
 
-  # API auth
-  auth:
-    token_env: FIGMA_API_TOKEN
-
   capabilities:
-    data_types: [files, versions, comments, users]
+    data_types: [files, versions, comments, design_context]
     reporting:
       daily: [files_edited, active_users]
-      weekly: [design_versions, comment_activity]
+      weekly: [design_versions]
       monthly: [project_progress]
 
   tracked_projects:
     - id: "123456789"
       name: "Design System"
-  tracked_files:
-    - key: "ABC123xyz"
-      name: "Marketing Landing Page"
+```
+
+### HTTP MCP Connection (Supabase)
+
+```yaml
+- id: supabase
+  type: mcp
+  mcp_name: "supabase"
+  status: connected
+
+  # Discovery metadata - HTTP-based MCP with dynamic registration
+  mcp_source: official
+  mcp_package: null
+  mcp_type: http
+  mcp_url: "https://api.supabase.com/mcp"
+  mcp_confidence: high
+  validated: true
+  install_cmd: "claude mcp add supabase https://api.supabase.com/mcp"
+
+  capabilities:
+    data_types: [tables, queries, auth, storage]
+    reporting:
+      daily: [row_counts, active_users]
+      weekly: [database_growth]
+```
+
+### API Connection (No MCP Available)
+
+```yaml
+- id: google_analytics
+  type: api
+  status: connected
+
+  # Discovery metadata - No MCP available
+  mcp_source: none
+  mcp_package: null
+  mcp_confidence: none
+  validated: true
+  api_docs_url: "https://developers.google.com/analytics"
+  note: "Use Google Analytics Data API directly"
+
+  # API auth
+  auth:
+    token_env: GA_SERVICE_ACCOUNT_KEY
+
+  capabilities:
+    data_types: [pageviews, sessions, events]
+    reporting:
+      daily: [session_count, top_pages]
+      weekly: [traffic_trends]
 ```
 
 ### Custom Wrapper (Substack)

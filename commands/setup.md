@@ -176,6 +176,8 @@ Show findings with clear status and source:
 
 For tools with ○ Available status (MCP exists but not installed):
 
+#### stdio MCPs (npm packages)
+
 ```markdown
 ### {Tool} — Available
 
@@ -192,12 +194,55 @@ What would you like to do?
 - [Tell me more] — What is an MCP?
 ```
 
+#### HTTP MCPs (hosted services)
+
+For tools like Figma, Supabase, and Vercel that use HTTP-based MCPs:
+
+```markdown
+### {Tool} — Available (HTTP MCP)
+
+{Tool} provides an official HTTP MCP. Install it to enable automatic data access.
+
+**Install command:**
+```bash
+{install_cmd}
+```
+
+Note: This will open a browser for authentication.
+
+What would you like to do?
+- [Install now] — Run the install command
+- [Skip for now] — Continue setup, add later
+- [Tell me more] — What is an HTTP MCP?
+```
+
+**HTTP MCP Install Commands:**
+- Figma: `claude mcp add --transport http figma https://mcp.figma.com/mcp`
+- Supabase: `claude mcp add supabase https://api.supabase.com/mcp`
+- Vercel: `claude mcp add --transport http vercel https://mcp.vercel.com`
+
+#### Detection Logic
+
+```yaml
+# Check mcp_type from known-tools.yaml
+if tool.mcp_type == "http":
+  # Use HTTP install pattern
+  if tool.install_cmd:
+    use tool.install_cmd
+  else:
+    use "claude mcp add --transport http {name} {mcp_url}"
+
+elif tool.mcp_type == "stdio":
+  # Use npm package install pattern
+  use "claude mcp add {name} -- npx -y {mcp_package}"
+```
+
 **Options handling:**
 
 **[Install now]:**
 Run the install command and verify:
 - If successful: Update status to ✓ Connected, continue
-- If auth flow triggered: Guide user through OAuth
+- If auth flow triggered: Guide user through OAuth (common for HTTP MCPs)
 - If fails: Show error, offer to skip or get help
 
 **[Skip for now]:**
@@ -492,31 +537,39 @@ Same async evaluation pattern as Operations.
 
 **Note:** Figma's official MCP is code-focused (not for reporting). We use the API directly for team/version reporting.
 
-### Step 2.4: Figma Special Handling
+### Step 2.4: Figma Handling
 
-The official Figma MCP is code-focused, not for reporting. Detect this:
+Figma now has an official HTTP MCP that provides comprehensive design access:
 
 ```markdown
-### Figma Evaluation
+### Figma — Available (HTTP MCP)
 
-MCP Status: Available (code-focused, not for reporting)
-API Status: Available (supports reporting data)
+Figma provides an official MCP with full design access.
 
-The official Figma MCP is designed for code generation workflows.
-For team activity tracking, we'll use the Figma API directly.
-
-To enable Figma reporting:
-1. Go to: figma.com/developers/api#access-tokens
-2. Generate a token with "File content" scope
-3. Enter your token below:
-```
-
-Accept token, validate via API call:
+**Install command:**
 ```bash
-curl -s -H "Authorization: Bearer {token}" "https://api.figma.com/v1/me"
+claude mcp add --transport http figma https://mcp.figma.com/mcp
 ```
 
-If valid, ask which projects to track.
+This will:
+1. Open a browser for Figma authentication
+2. Request permission to access your files
+3. Enable design context, screenshots, and Code Connect
+
+What would you like to do?
+- [Install now] — Run the install command
+- [Skip for now] — Continue setup, add later
+```
+
+**Capabilities via Figma MCP:**
+- Get design context (code, screenshots, metadata)
+- Access component libraries and design systems
+- Generate diagrams and capture web pages
+- Search design system assets
+- Code Connect mapping
+
+**Note:** The HTTP MCP requires browser authentication. After install,
+you can track specific projects in your config.
 
 ### Step 2.5: GitHub Project Selection
 

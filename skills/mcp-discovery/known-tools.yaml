@@ -1,85 +1,215 @@
 # Known Tools Database
-# Fast-path lookup for common tools to skip npm queries
-# This is a HINT, not a source of truth - discovery can verify dynamically
+# Verified registry for MCP discovery - all packages validated
+# This is the SOURCE OF TRUTH for DESIGN-OPS tool recommendations
 
-version: "1.0"
-last_updated: "2025-04-17"
+version: "2.0"
+last_validated: "2026-04-19"
+validation_method: "npm view + official docs"
 
-# Operations Pillar
+# Schema for each tool entry:
+# - mcp_source: official | vendor | community | none
+# - mcp_package: npm package name (null if HTTP or unavailable)
+# - mcp_type: stdio | http (how to connect)
+# - mcp_url: URL for HTTP MCPs
+# - mcp_confidence: high | medium | low | none
+# - validated: true (we verified this exists)
+# - install_cmd: optional explicit install command
+# - warning: optional caution message
+# - note: optional context
+# - env_required: list of required environment variables
+# - api_docs: URL to API documentation
+# - recommendation: mcp | api | both | unavailable
+
+# ═══════════════════════════════════════════════════════════════
+# OPERATIONS PILLAR
+# ═══════════════════════════════════════════════════════════════
+
 notion:
-  mcp_source: official
+  mcp_source: vendor
   mcp_package: "@notionhq/notion-mcp-server"
+  mcp_type: stdio
   mcp_confidence: high
   api_docs: "https://developers.notion.com"
   recommendation: mcp
-
-google_calendar:
-  mcp_source: official
-  mcp_package: "@anthropic/mcp-google-calendar"
-  mcp_confidence: high
-  api_docs: "https://developers.google.com/calendar"
-  recommendation: mcp
-
-gmail:
-  mcp_source: official
-  mcp_package: "@anthropic/mcp-gmail"
-  mcp_confidence: high
-  api_docs: "https://developers.google.com/gmail/api"
-  recommendation: mcp
-
-google_drive:
-  mcp_source: official
-  mcp_package: "@anthropic/mcp-google-drive"
-  mcp_confidence: high
-  api_docs: "https://developers.google.com/drive/api"
-  recommendation: mcp
+  validated: true  # v2.2.1, Mar 2026
+  env_required:
+    - NOTION_API_KEY
 
 linear:
-  mcp_source: vendor
-  mcp_package: "@linear/mcp-linear"
-  mcp_confidence: high
+  mcp_source: community
+  mcp_package: "mcp-server-linear"
+  mcp_type: stdio
+  mcp_confidence: medium
   api_docs: "https://developers.linear.app"
   recommendation: mcp
+  validated: true  # v1.6.0
+  warning: "Community package by dvcrn"
+  env_required:
+    - LINEAR_API_KEY
+
+google_calendar:
+  mcp_source: community
+  mcp_package: "@cocal/google-calendar-mcp"
+  mcp_type: stdio
+  mcp_confidence: medium
+  api_docs: "https://developers.google.com/calendar"
+  recommendation: mcp
+  validated: true  # v2.6.1, Mar 2026
+  warning: "Requires Google Cloud OAuth setup"
+  env_required:
+    - GOOGLE_CLIENT_ID
+    - GOOGLE_CLIENT_SECRET
+  setup_docs: "https://console.cloud.google.com/apis/credentials"
+
+gmail:
+  mcp_source: community
+  mcp_package: "mcp-server-gmail"
+  mcp_type: stdio
+  mcp_confidence: low
+  api_docs: "https://developers.google.com/gmail/api"
+  recommendation: api
+  validated: true  # v0.1.5
+  warning: "Low version, requires OAuth setup"
+  note: "Consider using comprehensive google-mcp packages instead"
+
+google_drive:
+  mcp_source: community
+  mcp_package: "@piotr-agier/google-drive-mcp"
+  mcp_type: stdio
+  mcp_confidence: medium
+  api_docs: "https://developers.google.com/drive/api"
+  recommendation: mcp
+  validated: true  # v2.1.0
+  warning: "Community package, requires OAuth"
+
+google_workspace:
+  mcp_source: community
+  mcp_package: "adw-google-mcp"
+  mcp_type: stdio
+  mcp_confidence: medium
+  api_docs: "https://developers.google.com"
+  recommendation: mcp
+  validated: true  # v0.0.15, 85 tools for Drive/Docs/Sheets/Calendar/Gmail
+  warning: "Community package - comprehensive Google suite"
+  note: "Alternative: @a-bonus/google-docs-mcp (v1.7.0)"
 
 slack:
-  mcp_source: community
-  mcp_package: null
+  mcp_source: official
+  mcp_package: "@modelcontextprotocol/server-slack"
+  mcp_type: stdio
   mcp_confidence: medium
   api_docs: "https://api.slack.com"
-  recommendation: both
-  warning: "Multiple community MCPs available. Verify before installing."
+  recommendation: mcp
+  validated: true  # v2025.4.25, DEPRECATED but functional
+  warning: "Package marked deprecated on npm"
+  env_required:
+    - SLACK_BOT_TOKEN
+    - SLACK_TEAM_ID
 
 asana:
-  mcp_source: community
+  mcp_source: none
   mcp_package: null
-  mcp_confidence: low
+  mcp_confidence: none
   api_docs: "https://developers.asana.com"
   recommendation: api
-  note: "Limited community MCP. Direct API recommended."
+  validated: true  # No MCP exists
+  note: "No MCP available. Use Asana REST API directly."
 
-# Design Pillar
+trello:
+  mcp_source: community
+  mcp_package: "mcp-server-trello"
+  mcp_type: stdio
+  mcp_confidence: medium
+  api_docs: "https://developer.atlassian.com/cloud/trello/"
+  recommendation: mcp
+  validated: true  # v1.0.4, Jul 2025
+  env_required:
+    - TRELLO_API_KEY
+    - TRELLO_TOKEN
+
+monday:
+  mcp_source: community
+  mcp_package: "mcp-server-monday"
+  mcp_type: stdio
+  mcp_confidence: low
+  api_docs: "https://developer.monday.com"
+  recommendation: api
+  validated: true  # v0.0.1 placeholder
+  warning: "Placeholder package only"
+  note: "Use Monday.com API directly until proper MCP available"
+
+clickup:
+  mcp_source: community
+  mcp_package: "mcp-server-clickup"
+  mcp_type: stdio
+  mcp_confidence: low
+  api_docs: "https://clickup.com/api"
+  recommendation: api
+  validated: true  # v0.0.1 placeholder
+  warning: "Placeholder package only"
+
+airtable:
+  mcp_source: community
+  mcp_package: "mcp-server-airtable"
+  mcp_type: stdio
+  mcp_confidence: low
+  api_docs: "https://airtable.com/developers/web/api"
+  recommendation: api
+  validated: true  # v0.0.1 placeholder
+  warning: "Placeholder package only"
+
+# ═══════════════════════════════════════════════════════════════
+# DESIGN PILLAR
+# ═══════════════════════════════════════════════════════════════
+
 github:
   mcp_source: official
-  mcp_package: "@anthropic/mcp-github"
+  mcp_package: "@modelcontextprotocol/server-github"
+  mcp_type: stdio
   mcp_confidence: high
   api_docs: "https://docs.github.com/en/rest"
   recommendation: mcp
+  validated: true  # v2025.4.8, DEPRECATED but functional
+  warning: "Package marked deprecated on npm"
+  env_required:
+    - GITHUB_PERSONAL_ACCESS_TOKEN
+
+gitlab:
+  mcp_source: official
+  mcp_package: "@modelcontextprotocol/server-gitlab"
+  mcp_type: stdio
+  mcp_confidence: high
+  api_docs: "https://docs.gitlab.com/ee/api/"
+  recommendation: mcp
+  validated: true  # v2025.4.25, DEPRECATED but functional
+  warning: "Package marked deprecated on npm"
+  env_required:
+    - GITLAB_PERSONAL_ACCESS_TOKEN
+    - GITLAB_API_URL
 
 figma:
   mcp_source: official
   mcp_package: null
-  mcp_confidence: low
+  mcp_type: http
+  mcp_url: "https://mcp.figma.com/mcp"
+  mcp_confidence: high
   api_docs: "https://www.figma.com/developers/api"
-  recommendation: api
-  note: "Official MCP is code-focused. Use API for reporting."
-
-gitlab:
-  mcp_source: community
-  mcp_package: "mcp-gitlab"
-  mcp_confidence: medium
-  api_docs: "https://docs.gitlab.com/ee/api/"
   recommendation: mcp
-  warning: "Community package. Verify before installing."
+  validated: true  # Official HTTP MCP
+  install_cmd: "claude mcp add --transport http figma https://mcp.figma.com/mcp"
+  note: "HTTP-based MCP with OAuth authentication"
+
+vercel:
+  mcp_source: official
+  mcp_package: null
+  mcp_type: http
+  mcp_url: "https://mcp.vercel.com"
+  mcp_confidence: high
+  api_docs: "https://vercel.com/docs/api"
+  recommendation: mcp
+  validated: true  # Official HTTP MCP
+  install_cmd: "claude mcp add --transport http vercel https://mcp.vercel.com"
+  note: "Read-only access to Vercel projects"
 
 bitbucket:
   mcp_source: none
@@ -87,6 +217,17 @@ bitbucket:
   mcp_confidence: none
   api_docs: "https://developer.atlassian.com/cloud/bitbucket/"
   recommendation: api
+  validated: true  # No MCP exists
+  note: "Use Bitbucket REST API directly"
+
+storybook:
+  mcp_source: vendor
+  mcp_package: "@storybook/mcp"
+  mcp_type: stdio
+  mcp_confidence: high
+  api_docs: "https://storybook.js.org/docs"
+  recommendation: mcp
+  validated: true  # v0.7.0
 
 sketch:
   mcp_source: none
@@ -94,22 +235,82 @@ sketch:
   mcp_confidence: none
   api_docs: "https://developer.sketch.com/"
   recommendation: unavailable
+  validated: true
   note: "Limited Sketch Cloud API. Consider exporting to Figma."
 
-# Analytics Pillar
-google_analytics:
+adobe_xd:
+  mcp_source: none
+  mcp_package: null
+  mcp_confidence: none
+  api_docs: null
+  recommendation: unavailable
+  validated: true
+  note: "Adobe XD has been discontinued. Use Figma instead."
+
+filesystem:
   mcp_source: official
-  mcp_package: "@anthropic/mcp-google-analytics"
+  mcp_package: "@modelcontextprotocol/server-filesystem"
+  mcp_type: stdio
   mcp_confidence: high
-  api_docs: "https://developers.google.com/analytics"
+  api_docs: null
   recommendation: mcp
+  validated: true  # v2026.1.14, actively maintained
+  note: "Local file system access"
+
+puppeteer:
+  mcp_source: official
+  mcp_package: "@modelcontextprotocol/server-puppeteer"
+  mcp_type: stdio
+  mcp_confidence: medium
+  api_docs: "https://pptr.dev"
+  recommendation: mcp
+  validated: true  # v2025.5.12, DEPRECATED
+  warning: "Package marked deprecated"
+
+# ═══════════════════════════════════════════════════════════════
+# ANALYTICS PILLAR
+# ═══════════════════════════════════════════════════════════════
+
+google_analytics:
+  mcp_source: none
+  mcp_package: null
+  mcp_confidence: none
+  api_docs: "https://developers.google.com/analytics"
+  recommendation: api
+  validated: true  # No dedicated MCP
+  note: "Use Google Analytics Data API. Consider adw-google-mcp for broader Google access."
+
+supabase:
+  mcp_source: official
+  mcp_package: null
+  mcp_type: http
+  mcp_url: "https://api.supabase.com/mcp"
+  mcp_confidence: high
+  api_docs: "https://supabase.com/docs/reference"
+  recommendation: mcp
+  validated: true  # Official HTTP MCP
+  install_cmd: "claude mcp add supabase https://api.supabase.com/mcp"
+  note: "Dynamic client registration, 20+ tools"
 
 dubco:
-  mcp_source: community
-  mcp_package: "mcp-dub"
-  mcp_confidence: medium
+  mcp_source: none
+  mcp_package: null
+  mcp_confidence: none
   api_docs: "https://dub.co/docs/api-reference"
+  recommendation: api
+  validated: true  # No official MCP, community is STDIO only
+  note: "Use Dub.co REST API directly. SDK: npm i dub"
+
+firecrawl:
+  mcp_source: community
+  mcp_package: "firecrawl-mcp"
+  mcp_type: stdio
+  mcp_confidence: high
+  api_docs: "https://firecrawl.dev/docs"
   recommendation: mcp
+  validated: true  # v3.11.0, Mar 2026, very active
+  env_required:
+    - FIRECRAWL_API_KEY
 
 plausible:
   mcp_source: none
@@ -117,6 +318,44 @@ plausible:
   mcp_confidence: none
   api_docs: "https://plausible.io/docs/stats-api"
   recommendation: api
+  validated: true
+  note: "Privacy-focused analytics. Use REST API."
+
+posthog:
+  mcp_source: none
+  mcp_package: null
+  mcp_confidence: none
+  api_docs: "https://posthog.com/docs/api"
+  recommendation: api
+  validated: true  # No MCP exists
+  note: "Use PostHog REST API directly"
+
+mixpanel:
+  mcp_source: none
+  mcp_package: null
+  mcp_confidence: none
+  api_docs: "https://developer.mixpanel.com"
+  recommendation: api
+  validated: true
+  note: "Use Mixpanel REST API"
+
+amplitude:
+  mcp_source: none
+  mcp_package: null
+  mcp_confidence: none
+  api_docs: "https://developers.amplitude.com"
+  recommendation: api
+  validated: true
+  note: "Use Amplitude REST API"
+
+segment:
+  mcp_source: none
+  mcp_package: null
+  mcp_confidence: none
+  api_docs: "https://segment.com/docs/api/"
+  recommendation: api
+  validated: true
+  note: "Use Segment REST API"
 
 substack:
   mcp_source: none
@@ -124,30 +363,17 @@ substack:
   mcp_confidence: none
   api_docs: null
   recommendation: api
-  note: "Limited unofficial API. Custom wrapper via /mcp-builder."
+  validated: true
+  note: "Limited unofficial API. Create custom wrapper via /mcp-builder."
 
-supabase:
-  mcp_source: official
-  mcp_package: "@anthropic/mcp-supabase"
-  mcp_confidence: high
-  api_docs: "https://supabase.com/docs/reference"
-  recommendation: mcp
-
-firecrawl:
-  mcp_source: community
-  mcp_package: "firecrawl-mcp"
-  mcp_confidence: high
-  api_docs: "https://firecrawl.dev/docs"
-  recommendation: mcp
-
-# Restricted/Limited Tools
 instagram:
   mcp_source: none
   mcp_package: null
   mcp_confidence: none
   api_docs: "https://developers.facebook.com/docs/instagram-api"
   recommendation: unavailable
-  note: "Business accounts only with complex approval process."
+  validated: true
+  note: "Business accounts only with complex Meta approval process."
   alternatives:
     - Buffer
     - Sprout Social
@@ -159,14 +385,94 @@ twitter:
   mcp_confidence: none
   api_docs: "https://developer.twitter.com/"
   recommendation: unavailable
+  validated: true
   note: "Paid tiers only ($100+/month for meaningful access)."
-  alternatives:
-    - TweetDeck exports
 
-linkedin:
+# ═══════════════════════════════════════════════════════════════
+# INFRASTRUCTURE / DEVOPS PILLAR
+# ═══════════════════════════════════════════════════════════════
+
+postgres:
+  mcp_source: official
+  mcp_package: "@modelcontextprotocol/server-postgres"
+  mcp_type: stdio
+  mcp_confidence: medium
+  api_docs: "https://www.postgresql.org/docs/"
+  recommendation: mcp
+  validated: true  # v0.6.2, DEPRECATED
+  warning: "Package marked deprecated"
+  env_required:
+    - POSTGRES_CONNECTION_STRING
+
+google_cloud:
+  mcp_source: official
+  mcp_package: "@google-cloud/gcloud-mcp"
+  mcp_type: stdio
+  mcp_confidence: high
+  api_docs: "https://cloud.google.com/docs"
+  recommendation: mcp
+  validated: true  # v0.5.3, Official Google package
+  note: "Official Google Cloud MCP"
+
+brave_search:
+  mcp_source: official
+  mcp_package: "@modelcontextprotocol/server-brave-search"
+  mcp_type: stdio
+  mcp_confidence: medium
+  api_docs: "https://brave.com/search/api/"
+  recommendation: mcp
+  validated: true  # v0.6.2, DEPRECATED
+  warning: "Package marked deprecated"
+  env_required:
+    - BRAVE_API_KEY
+
+google_maps:
+  mcp_source: official
+  mcp_package: "@modelcontextprotocol/server-google-maps"
+  mcp_type: stdio
+  mcp_confidence: medium
+  api_docs: "https://developers.google.com/maps"
+  recommendation: mcp
+  validated: true  # v0.6.2, DEPRECATED
+  warning: "Package marked deprecated"
+  env_required:
+    - GOOGLE_MAPS_API_KEY
+
+memory:
+  mcp_source: official
+  mcp_package: "@modelcontextprotocol/server-memory"
+  mcp_type: stdio
+  mcp_confidence: high
+  api_docs: null
+  recommendation: mcp
+  validated: true  # v2026.1.26, actively maintained
+  note: "Knowledge graph memory for conversations"
+
+sentry:
   mcp_source: none
   mcp_package: null
   mcp_confidence: none
-  api_docs: "https://developer.linkedin.com/"
-  recommendation: unavailable
-  note: "Company pages only. Requires LinkedIn Partnership Program."
+  api_docs: "https://docs.sentry.io/api/"
+  recommendation: api
+  validated: true
+  note: "Use Sentry REST API directly"
+
+datadog:
+  mcp_source: none
+  mcp_package: null
+  mcp_confidence: none
+  api_docs: "https://docs.datadoghq.com/api/"
+  recommendation: api
+  validated: true
+  note: "Use Datadog REST API directly"
+
+stripe:
+  mcp_source: community
+  mcp_package: "mcp-server-stripe"
+  mcp_type: stdio
+  mcp_confidence: low
+  api_docs: "https://stripe.com/docs/api"
+  recommendation: api
+  validated: true  # v0.0.1 placeholder
+  warning: "Placeholder package only"
+  note: "Use Stripe SDK directly"
