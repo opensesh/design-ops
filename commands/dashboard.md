@@ -102,7 +102,77 @@ pillars:
 
 ### Step 3: Fetch Data by Pillar × Timeframe
 
-Execute appropriate data gathering based on pillar and timeframe combination.
+**CRITICAL:** Dashboard must attempt to fetch actual data from each connected tool.
+Never display just "Connected" status — either show real data or explain why data isn't available.
+
+For each enabled pillar and connected tool:
+
+1. **Attempt data fetch** via MCP tool call
+2. **If successful** → Display the actual metrics
+3. **If failed** → Show specific error with fix guidance
+
+#### Operations Pillar Data Fetching
+
+```
+For each tool in operations.tools where status == connected:
+
+  if tool == notion:
+    → Call mcp__notion__API-query-data-source to get tasks
+    → If success: Display "Tasks due today: {count}" with task list
+    → If error: Show "Notion — ⚠ {error_message}" with fix guidance
+
+  if tool == google_workspace:
+    → Call Google Calendar MCP for today's events
+    → If OAuth needed: Show "Google Workspace — ⚠ OAuth Required"
+      → Guidance: "Run a Google command to complete OAuth"
+    → If success: Display "{count} events today" with schedule
+
+  if tool == linear:
+    → Call Linear MCP for assigned issues
+    → Display "Open issues: {count}" with priority breakdown
+```
+
+#### Design Pillar Data Fetching
+
+```
+For each tool in design.tools where status == connected:
+
+  if tool == github:
+    → Call mcp__github__list_commits for each tracked repo
+    → Display actual commit data with authors, messages, timestamps
+    → Show open PRs with review status
+
+  if tool == figma:
+    → Use Figma MCP to get recent file activity
+    → If OAuth needed: Show "Figma — ⚠ OAuth Required"
+    → If success: Display "{file_name} — edited {time_ago} by {editor}"
+```
+
+#### Analytics Pillar Data Fetching
+
+```
+For each tool in analytics.tools where status == connected:
+
+  if tool == dubco:
+    → Call Dub.co MCP to list links and aggregate click counts
+    → Display: "Total clicks: {count}"
+    → Show top performing links with click counts
+
+  if tool == vercel:
+    → Call mcp__vercel__get_runtime_logs or list_deployments
+    → Display deployment status, last deploy time
+
+  if tool == google_analytics:
+    → If configured: Fetch pageview/session data
+    → If not configured: Show "GA4 — ⚠ Property ID needed"
+
+  if tool == supabase:
+    → If not authed: Show "Supabase — ⚠ OAuth Required"
+      → Guidance: "Run a Supabase query to complete OAuth"
+    → If authed: Display query count or user metrics
+```
+
+#### Summary by Pillar
 
 **Operations pillar:**
 - Daily: Calendar events, tasks due, unread emails/messages
@@ -125,6 +195,138 @@ Execute appropriate data gathering based on pillar and timeframe combination.
 ### Step 4: Render Output
 
 Generate report using the appropriate template for pillar × timeframe.
+
+**IMPORTANT:** When rendering output:
+- Show actual data values from tool responses
+- Never show just "✓ Connected" without data
+- For failed fetches, show the error state with fix guidance
+
+---
+
+## Error State Templates
+
+When data can't be fetched, show actionable guidance instead of silent failure.
+
+### Template: Tool Needs OAuth
+
+```markdown
+**{Tool Name}** — ⚠ OAuth Required
+
+Run any {Tool} command to complete authorization.
+A browser window will open for OAuth.
+
+Example: "show my {example_action}"
+```
+
+**Examples:**
+
+```markdown
+**Google Workspace** — ⚠ OAuth Required
+
+Run any Google command to complete authorization.
+A browser window will open for OAuth.
+
+Example: "show my calendar for today"
+```
+
+```markdown
+**Supabase** — ⚠ OAuth Required
+
+Run any Supabase query to complete authorization.
+A browser window will open for OAuth.
+
+Example: "show my Supabase tables"
+```
+
+```markdown
+**Figma** — ⚠ OAuth Required
+
+Run any Figma command or paste a Figma URL to complete authorization.
+A browser window will open for OAuth.
+
+Example: Paste a figma.com/design/... URL
+```
+
+### Template: Environment Variable Missing
+
+```markdown
+**{Tool Name}** — ⚠ API Key Missing
+
+Set {ENV_VAR} in your environment:
+```bash
+export {ENV_VAR}="{example_value}"
+```
+
+Then restart your terminal.
+```
+
+**Examples:**
+
+```markdown
+**Notion** — ⚠ API Key Missing
+
+Set NOTION_API_KEY in your environment:
+```bash
+export NOTION_API_KEY="secret_..."
+```
+
+Then restart your terminal.
+
+Get your token: https://www.notion.so/my-integrations
+```
+
+### Template: Tool Not Configured
+
+```markdown
+**{Tool Name}** — ⚠ Not Configured
+
+To enable {tool_type} metrics:
+1. {setup_step_1}
+2. {setup_step_2}
+3. Run `/design-ops:configure {pillar}` to add it
+
+Or skip with: `/design-ops:configure {pillar}` to remove this tool
+```
+
+**Example:**
+
+```markdown
+**Google Analytics** — ⚠ Not Configured
+
+To enable traffic metrics:
+1. Get a GA4 property ID from analytics.google.com
+2. Run `/design-ops:configure analytics` to add it
+
+Or skip: This tool won't appear in dashboards until configured.
+```
+
+### Template: Connection Error
+
+```markdown
+**{Tool Name}** — ⚠ Connection Error
+
+{error_message}
+
+**Likely causes:**
+1. {cause_1}
+2. {cause_2}
+
+**Fix:** {fix_guidance}
+```
+
+**Example:**
+
+```markdown
+**GitHub** — ⚠ Connection Error
+
+MCP not responding (timeout after 10s)
+
+**Likely causes:**
+1. MCP server crashed — restart Claude
+2. Network issue — check internet connection
+
+**Fix:** Try restarting Claude, or run `claude mcp list`
+```
 
 ---
 
@@ -160,10 +362,32 @@ Generate report using the appropriate template for pillar × timeframe.
 
 {If analytics enabled:}
 ### Analytics
-**Today's Numbers**
-- Page views: {count} ({change} vs yesterday)
-- Link clicks: {count}
+
+**Link Performance (Dub.co)**
+{If dub.co connected and data fetched:}
+- Total clicks today: {count} ({change} vs yesterday)
+- Top links:
+  1. /{slug_1} — {clicks_1} clicks
+  2. /{slug_2} — {clicks_2} clicks
+  3. /{slug_3} — {clicks_3} clicks
+{If dub.co needs auth:}
+⚠ Dub.co — OAuth required. Run a Dub command to complete setup.
+
+**Web Traffic (Google Analytics)**
+{If GA configured and data fetched:}
+- Sessions today: {count}
+- Page views: {count}
 - Top page: {page} ({views} views)
+{If GA not configured:}
+⚠ Google Analytics — Not configured.
+   Run `/design-ops:configure analytics` to add your GA4 property ID.
+
+**Deployments (Vercel)**
+{If vercel connected:}
+- Latest deploy: {time_ago} ({status})
+- Domains: {domain_list}
+{If vercel needs auth:}
+⚠ Vercel — OAuth required. Run a Vercel command to complete setup.
 
 ---
 
