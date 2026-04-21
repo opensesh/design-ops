@@ -38,6 +38,8 @@ Display commands grouped by category:
 
 Ad-hoc commands organized by purpose. Use any command directly.
 
+📖 **Full documentation:** https://github.com/opensesh/DESIGN-OPS/tree/main/commands/library
+
 ---
 
 ### Logistics (3)
@@ -207,6 +209,13 @@ To add a command to the library:
 
 - `/design-ops:help` — Full command reference (includes system commands and dashboard)
 - `/design-ops:dashboard` — Core pillar × timeframe reporting
+
+---
+
+## Source Code
+
+Browse and contribute to the library:
+**https://github.com/opensesh/DESIGN-OPS/tree/main/commands/library**
 
 ---
 
