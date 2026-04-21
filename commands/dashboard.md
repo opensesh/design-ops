@@ -737,4 +737,30 @@ Shows all enabled pillars with weekly timeframe.
 
 ---
 
-*Version: 1.0*
+## Related Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/design-ops:dashboard-html` | Generate static HTML dashboard viewable in browser |
+| `/design-ops:configure` | Update DESIGN-OPS configuration |
+| `/design-ops:setup` | Initial setup wizard |
+
+### Visual Dashboard Option
+
+For a visual, responsive dashboard that works on mobile:
+
+```bash
+/design-ops:dashboard-html [pillar] [timeframe]
+```
+
+This generates a single HTML file with:
+- Responsive layout (mobile, tablet, desktop)
+- Dark mode support (automatic)
+- Interactive charts (Chart.js)
+- No build tools required
+
+Output: `~/.claude/design-ops/dashboard.html`
+
+---
+
+*Version: 1.1*

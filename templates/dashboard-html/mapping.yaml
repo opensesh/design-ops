@@ -1,0 +1,207 @@
+# Component Mapping Rules
+#
+# Defines how data types map to dashboard components.
+# The LLM uses these rules to select the appropriate component
+# for each piece of data fetched from MCP tools.
+#
+# Version: 1.0
+
+version: "1.0"
+
+# Component definitions with selection criteria
+mappings:
+
+  # Single metric with optional trend
+  single_metric:
+    component: stat-card
+    description: "Single number with optional trend indicator"
+    data_shape:
+      - "single value"
+      - "number with comparison"
+      - "count with change"
+    examples:
+      - tasks_due
+      - total_clicks
+      - session_count
+      - unread_emails
+      - open_prs
+      - commits_today
+    icons:
+      tasks_due: "check-square"
+      total_clicks: "mouse-pointer-click"
+      session_count: "users"
+      unread_emails: "mail"
+      open_prs: "git-pull-request"
+      commits_today: "git-commit"
+      calendar_events: "calendar"
+      pageviews: "eye"
+      revenue: "dollar-sign"
+
+  # Time series data (line chart)
+  time_series:
+    component: line-chart
+    description: "Data points over time"
+    data_shape:
+      - "array with dates/timestamps"
+      - "sequential measurements"
+      - "trend over period"
+    examples:
+      - traffic_trends
+      - commit_activity
+      - weekly_sessions
+      - monthly_revenue
+      - quarter_comparison
+
+  # Categorical comparisons (bar chart)
+  categorical:
+    component: bar-chart
+    description: "Comparisons by category (up to 8 items)"
+    data_shape:
+      - "array of {label, value} pairs"
+      - "ranked list with counts"
+      - "category breakdown"
+    max_items: 8
+    examples:
+      - top_links
+      - team_contributions
+      - page_rankings
+      - pr_by_author
+      - traffic_by_source
+
+  # Activity/event lists
+  activity_list:
+    component: list-activity
+    description: "Ordered events with timestamps"
+    data_shape:
+      - "array of activities"
+      - "events with times"
+      - "action log"
+    examples:
+      - calendar_events
+      - recent_commits
+      - open_prs
+      - design_updates
+      - recent_deploys
+    icons:
+      calendar_events: "calendar"
+      recent_commits: "git-commit"
+      open_prs: "git-pull-request"
+      design_updates: "figma"
+      recent_deploys: "rocket"
+      recent_pages: "file-text"
+
+  # Multi-column tabular data
+  tabular:
+    component: table-simple
+    description: "Structured data with multiple columns"
+    data_shape:
+      - "array of objects with multiple properties"
+      - "spreadsheet-like data"
+    min_columns: 3
+    examples:
+      - quarter_goals
+      - project_status
+      - team_roster
+      - budget_breakdown
+
+  # Error states
+  error:
+    component: empty-state
+    description: "Error conditions and required actions"
+    variants:
+      oauth_required:
+        icon: "key"
+        icon_color: "warning"
+        message_template: "OAuth Required"
+        guidance_template: "Run any {{TOOL}} command to complete authorization."
+      api_key_missing:
+        icon: "key"
+        icon_color: "error"
+        message_template: "API Key Missing"
+        guidance_template: "Set {{ENV_VAR}} in your environment."
+      not_configured:
+        icon: "settings"
+        icon_color: "info"
+        message_template: "Not Configured"
+        guidance_template: "Run /design-ops:configure to set up {{TOOL}}."
+      connection_error:
+        icon: "wifi-off"
+        icon_color: "error"
+        message_template: "Connection Error"
+        guidance_template: "Check your network connection and try again."
+      no_data:
+        icon: "inbox"
+        icon_color: "brand"
+        message_template: "No Data"
+        guidance_template: "No {{DATA_TYPE}} found for this timeframe."
+
+# Selection logic for LLM
+selection_rules:
+  # Priority order when multiple mappings could apply
+  priority:
+    - error           # Always check for errors first
+    - single_metric   # Single values are most specific
+    - activity_list   # Lists with timestamps
+    - time_series     # Temporal data
+    - categorical     # Comparisons
+    - tabular         # Fallback for structured data
+
+  # Heuristics for automatic detection
+  heuristics:
+    - rule: "If data contains error field, use error component"
+    - rule: "If data is single number, use single_metric"
+    - rule: "If array items have 'time' or 'date' fields, prefer activity_list"
+    - rule: "If array items have timestamp x-axis data, prefer time_series"
+    - rule: "If array of {label, value} with ≤8 items, prefer categorical"
+    - rule: "If array of {label, value} with >8 items, prefer tabular"
+    - rule: "If array items have 3+ properties, consider tabular"
+
+# Pillar-specific defaults
+pillar_defaults:
+  operations:
+    primary_metrics:
+      - calendar_events
+      - tasks_due
+      - unread_emails
+    activity_types:
+      - calendar_events
+      - tasks
+
+  design:
+    primary_metrics:
+      - commits_today
+      - open_prs
+    activity_types:
+      - recent_commits
+      - open_prs
+      - design_updates
+
+  analytics:
+    primary_metrics:
+      - pageviews
+      - total_clicks
+    chart_types:
+      - top_links
+      - traffic_trends
+
+# Timeframe-specific component preferences
+timeframe_preferences:
+  daily:
+    prefer_activity_lists: true
+    prefer_single_metrics: true
+    max_chart_items: 5
+
+  weekly:
+    prefer_charts: true
+    prefer_comparisons: true
+    max_chart_items: 7
+
+  quarterly:
+    prefer_tables: true
+    prefer_trend_charts: true
+    show_goal_progress: true
+
+  ytd:
+    prefer_summary_metrics: true
+    prefer_comparison_charts: true
+    show_annual_totals: true

@@ -1,0 +1,80 @@
+<!--
+  Empty State Component
+
+  Displays error states, missing data, or required actions with guidance.
+
+  Variables:
+    {{ID}}            - Unique identifier
+    {{ICON}}          - Lucide icon name (default: "alert-triangle")
+    {{ICON_COLOR}}    - Icon background/color variant: "warning", "error", "info", "brand"
+    {{TITLE}}         - Error/state title
+    {{MESSAGE}}       - Description of the issue
+    {{GUIDANCE}}      - Actionable fix instructions
+    {{ACTION_TEXT}}   - Button text (optional)
+    {{ACTION_HREF}}   - Button link (optional)
+
+  Data Format:
+    {
+      "type": "error",
+      "id": "google-oauth",
+      "error_type": "oauth_required",
+      "icon": "key",
+      "icon_color": "warning",
+      "title": "Google Workspace",
+      "message": "OAuth Required",
+      "guidance": "Run any Google command to complete authorization."
+    }
+
+  Icon Color Variants:
+    - warning: Yellow/amber background
+    - error: Red background
+    - info: Blue background
+    - brand: Aperol/brand background
+-->
+
+<div id="empty-{{ID}}" class="rounded-xl border p-6 text-center" style="background-color: var(--bg-secondary); border-color: var(--border-secondary);">
+  <!-- Icon -->
+  <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center
+    {{#ICON_WARNING}}
+    " style="background-color: var(--color-warning-50);">
+    <i data-lucide="{{ICON}}" class="w-6 h-6" style="color: var(--color-warning-500);"></i>
+    {{/ICON_WARNING}}
+    {{#ICON_ERROR}}
+    " style="background-color: var(--color-error-50);">
+    <i data-lucide="{{ICON}}" class="w-6 h-6" style="color: var(--color-error-500);"></i>
+    {{/ICON_ERROR}}
+    {{#ICON_INFO}}
+    " style="background-color: #dbeafe;">
+    <i data-lucide="{{ICON}}" class="w-6 h-6" style="color: #3b82f6;"></i>
+    {{/ICON_INFO}}
+    {{#ICON_BRAND}}
+    " style="background-color: var(--color-brand-50);">
+    <i data-lucide="{{ICON}}" class="w-6 h-6" style="color: var(--color-brand-600);"></i>
+    {{/ICON_BRAND}}
+  </div>
+
+  <!-- Title -->
+  <h3 class="mt-4 text-sm font-semibold" style="color: var(--fg-primary);">{{TITLE}}</h3>
+
+  <!-- Message -->
+  <p class="mt-2 text-sm" style="color: var(--fg-secondary);">{{MESSAGE}}</p>
+
+  <!-- Guidance -->
+  {{#GUIDANCE}}
+  <p class="mt-4 text-xs" style="color: var(--fg-tertiary);">{{GUIDANCE}}</p>
+  {{/GUIDANCE}}
+
+  <!-- Optional Action Button -->
+  {{#ACTION_TEXT}}
+  <div class="mt-4">
+    <a
+      href="{{ACTION_HREF}}"
+      class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg"
+      style="background-color: var(--bg-brand-solid); color: white;"
+    >
+      {{ACTION_TEXT}}
+      <i data-lucide="arrow-right" class="w-4 h-4"></i>
+    </a>
+  </div>
+  {{/ACTION_TEXT}}
+</div>

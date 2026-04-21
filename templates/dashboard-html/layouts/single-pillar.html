@@ -1,0 +1,92 @@
+<!--
+  Single Pillar Layout
+
+  Full-width layout for displaying a single pillar with expanded detail.
+
+  Variables:
+    {{PILLAR_NAME}}     - Pillar display name ("Operations", "Design", "Analytics")
+    {{PILLAR_ICON}}     - Lucide icon name for the pillar
+    {{PILLAR_CONTENT}}  - Component content for the pillar
+    {{PILLAR_ID}}       - Pillar identifier (ops, design, analytics)
+
+  Layout:
+    - Summary stats in a row at the top
+    - Detailed content in a 2-column grid below
+-->
+
+<div class="space-y-6">
+
+  <!-- Pillar Header -->
+  <div class="flex items-center gap-3 pb-4 border-b" style="border-color: var(--border-secondary);">
+    <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: var(--color-brand-50);">
+      <i data-lucide="{{PILLAR_ICON}}" class="w-5 h-5" style="color: var(--color-brand-600);"></i>
+    </div>
+    <div>
+      <h2 class="text-xl font-semibold" style="color: var(--fg-primary);">{{PILLAR_NAME}}</h2>
+      <p class="text-sm" style="color: var(--fg-tertiary);">{{PILLAR_DESCRIPTION}}</p>
+    </div>
+  </div>
+
+  <!-- Summary Stats Row -->
+  {{#HAS_SUMMARY_STATS}}
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    {{SUMMARY_STATS}}
+  </div>
+  {{/HAS_SUMMARY_STATS}}
+
+  <!-- Main Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    {{PILLAR_CONTENT}}
+  </div>
+
+  <!-- Detailed Tables/Lists (full width) -->
+  {{#HAS_DETAILED_CONTENT}}
+  <div class="space-y-4">
+    {{DETAILED_CONTENT}}
+  </div>
+  {{/HAS_DETAILED_CONTENT}}
+
+</div>
+
+<!-- Pillar-specific Insights -->
+{{#HAS_INSIGHTS}}
+<div class="mt-8 rounded-xl border p-6" style="background-color: var(--bg-secondary); border-color: var(--border-secondary);">
+  <div class="flex items-center gap-2 mb-4">
+    <i data-lucide="lightbulb" class="w-5 h-5" style="color: var(--color-brand-600);"></i>
+    <h3 class="font-semibold" style="color: var(--fg-primary);">{{PILLAR_NAME}} Insights</h3>
+  </div>
+  <ul class="space-y-2">
+    {{#INSIGHTS}}
+    <li class="flex items-start gap-2">
+      <span class="text-xs mt-1" style="color: var(--color-brand-500);">•</span>
+      <span class="text-sm" style="color: var(--fg-secondary);">{{INSIGHT_TEXT}}</span>
+    </li>
+    {{/INSIGHTS}}
+  </ul>
+</div>
+{{/HAS_INSIGHTS}}
+
+<!-- Related Actions -->
+<div class="mt-6 flex flex-wrap gap-3 no-print">
+  <button
+    onclick="window.print()"
+    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border"
+    style="background-color: var(--bg-secondary); border-color: var(--border-secondary); color: var(--fg-secondary);"
+  >
+    <i data-lucide="printer" class="w-4 h-4"></i>
+    Print
+  </button>
+
+  {{#SHOW_OTHER_PILLARS}}
+  <span class="text-sm self-center" style="color: var(--fg-tertiary);">View other pillars:</span>
+  {{#OTHER_PILLARS}}
+  <a
+    href="dashboard-{{PILLAR_ID}}.html"
+    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border hover:opacity-80"
+    style="background-color: var(--bg-tertiary); border-color: var(--border-secondary); color: var(--fg-secondary);"
+  >
+    {{PILLAR_NAME}}
+  </a>
+  {{/OTHER_PILLARS}}
+  {{/SHOW_OTHER_PILLARS}}
+</div>
