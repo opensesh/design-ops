@@ -925,68 +925,334 @@ If user selects "Continue", proceed to Skills Library.
 
 ---
 
-## Chapter 4: Skills Library
+## Chapter 4: Auto-Activating Skills
 
-**Goal**: Select which utility skills to enable (optional, all available by default)
+**Goal**: Configure skills that activate automatically based on context
 
-After completing pillar configuration, present the skills library:
+DESIGN-OPS includes skills that activate automatically — you don't invoke them directly. They kick in when the context is relevant.
+
+### Step 4.1: Explain Auto-Activating Skills
 
 ```markdown
-## Available Skills
+## Auto-Activating Skills
 
-DESIGN-OPS includes a library of utility skills. Select the ones you want to enable:
+DESIGN-OPS includes skills that activate automatically based on context.
+You don't invoke them — they kick in when relevant.
 
-**Design Quality** (NEW)
-☐ design-audit        — Automated design system compliance
-☐ a11y-audit          — Accessibility compliance check (WCAG A/AA/AAA)
+**How they work:**
+- You mention "brand colors" → `brand-guidelines` skill activates
+- You're debugging → `systematic-debugging` guides root cause analysis
+- You claim something is "done" → `verification-before-completion` runs checks
 
-**Research & Inspiration** (NEW)
-☐ competitor-scan     — Competitive design analysis
-☐ mood-board          — Curated design inspiration
-☐ variation-sprint    — Generate design variations
+### Available Auto-Activating Skills
 
-**Content Creation** (NEW)
-☐ copy-variants       — Generate and A/B test copy variations
-☐ content-brief       — Create content outlines for articles, blogs, case studies
+| Skill | Triggers On | What It Does |
+|-------|-------------|--------------|
+| `brand-guidelines` | "brand", "Aperol", "colors", "voice" | Enforces brand identity |
+| `frontend-design` | UI work, components, layouts | Component patterns |
+| `design-system-quality` | Design system reviews | Compliance checks |
+| `verification-before-completion` | "done", "finished", completing work | Quality gates |
+| `systematic-debugging` | Errors, bugs, investigation | 4-phase root cause analysis |
 
-**Development** (NEW)
-☐ research-summary    — Synthesize research into actionable insights
+**These are enabled by default.** They work silently in the background.
 
-**Auto-Activating Skills** (enabled by default)
-☑ brand-guidelines    — Brand identity enforcement
-☑ frontend-design     — UI component patterns
-☑ design-system-quality — Design compliance review
-☑ verification-before-completion — Quality gates
-☑ systematic-debugging — 4-phase root cause analysis
+📖 **Browse the source:**
+https://github.com/opensesh/DESIGN-OPS/tree/main/skills
 
-Note: Auto-activating skills work automatically based on context.
-The selectable skills above are invoked via `/design-ops:library`.
+### What would you like to do?
 
-[Enable selected] [Enable all] [Skip for now]
+- [Keep all enabled (recommended)] — Skills work automatically
+- [Review and customize] — See detailed descriptions, toggle individual skills
+- [Disable all] — No auto-triggering skills
 ```
 
-Store selections in config:
+### Step 4.2: Handle Skill Selection
+
+**[Keep all enabled]** (recommended):
+```yaml
+# Store in config:
+skills:
+  auto_activating:
+    enabled: true
+    items:
+      - brand_guidelines
+      - frontend_design
+      - design_system_quality
+      - verification_before_completion
+      - systematic_debugging
+```
+
+**[Review and customize]:**
+Show detailed description for each skill with individual toggle.
+
+**[Disable all]:**
+```yaml
+skills:
+  auto_activating:
+    enabled: false
+```
+
+---
+
+## Chapter 5: Utility Commands
+
+**Goal**: Select which utility commands to import (optional, all available by default)
+
+Unlike auto-activating skills, utility commands are **explicit** — you run them when you need them.
+
+### Step 5.1: Present Utility Commands
+
+```markdown
+## Utility Commands
+
+DESIGN-OPS also includes **14 utility commands** — explicit, on-demand tools you invoke directly.
+
+Unlike auto-activating skills, you run these when you need them:
+
+```bash
+/design-ops:design-audit        # Run a design system audit
+/design-ops:meeting-brief       # Create a meeting agenda
+/design-ops:competitor-scan     # Analyze a competitor's site
+```
+
+### Available Utility Commands (4 categories)
+
+**Logistics (3)** — Meeting prep, kickoffs
+- `/design-ops:meeting-brief` — Create focused meeting agendas
+- `/design-ops:meeting-recap` — Document meetings with decisions
+- `/design-ops:kickoff-prep` — Generate kickoff materials
+
+**Content (3)** — Copy and content creation
+- `/design-ops:social-post` — Platform-optimized social content
+- `/design-ops:copy-variants` — A/B test copy variations
+- `/design-ops:content-brief` — Content outlines
+
+**Development (3)** — Research and analysis
+- `/design-ops:site-analysis` — Deep website analysis
+- `/design-ops:devils-advocate` — Stress-test assumptions
+- `/design-ops:research-summary` — Synthesize research
+
+**Design (5)** — Quality and exploration
+- `/design-ops:design-audit` — Design system compliance
+- `/design-ops:a11y-audit` — Accessibility check (WCAG)
+- `/design-ops:mood-board` — Design inspiration
+- `/design-ops:competitor-scan` — Competitive analysis
+- `/design-ops:variation-sprint` — Generate design variations
+
+📖 **Browse the library anytime:**
+Run `/design-ops:library` to see all commands with descriptions.
+
+📖 **Source code:**
+https://github.com/opensesh/DESIGN-OPS/tree/main/commands/library
+
+### What would you like to do?
+
+- [Import all (recommended)] — All 14 commands available
+- [Select specific commands] — Choose which categories to import
+- [Skip for now] — Add commands later via `/design-ops:library`
+```
+
+### Step 5.2: Handle Command Selection
+
+**[Import all]** (recommended):
+```yaml
+# Store in config:
+utility_commands:
+  enabled: true
+  categories:
+    - logistics
+    - content
+    - development
+    - design
+```
+
+**[Select specific commands]:**
+Show category-by-category selection with checkboxes.
+
+**[Skip for now]:**
+```yaml
+utility_commands:
+  enabled: false
+```
+
+---
+
+## Chapter 6: Connection Verification Gate
+
+**Goal**: Ensure all installed tools are actually working before declaring setup complete.
+
+After skills and commands are configured, verify tool connections.
+
+### Step 6.1: Collect Tool Statuses
+
+Iterate through all pillars and categorize tools:
+
+| Category | Status | Meaning |
+|----------|--------|---------|
+| **Ready** | ✓ Connected | MCP responding, credentials valid |
+| **Needs Auth** | ⚠ Installed | MCP installed but requires OAuth/env setup |
+| **API Config Needed** | ⚠ Configured | API token needed, not validated |
+| **Skipped** | — Skipped | User chose to skip |
+
+### Step 6.2: Present Verification Summary
+
+**If ALL tools are ready (✓ Connected):**
+Proceed directly to Final Synthesis — no gate needed.
+
+**If ANY tool has "Needs Auth" or "API Config Needed" status:**
+
+```markdown
+## Almost There — {count} Tool(s) Need Attention
+
+Your configuration is saved, but some tools need additional setup to work:
+
+┌───────────────────┬─────────────┬─────────────────────────────────────┐
+│ Tool              │ Status      │ Action Required                     │
+├───────────────────┼─────────────┼─────────────────────────────────────┤
+│ Google Workspace  │ ⚠ Installed │ Complete OAuth (runs on first use)  │
+│ Supabase          │ ⚠ Installed │ OAuth login required                │
+│ Notion            │ ⚠ Configured│ Set NOTION_API_KEY env variable     │
+└───────────────────┴─────────────┴─────────────────────────────────────┘
+
+**What would you like to do?**
+- [Complete setup now] — I'll guide you through each one
+- [Continue anyway] — Use what's working, fix these later
+- [Run a test] — Try the dashboard to see what works
+```
+
+### Step 6.3: Guided Completion Flow
+
+If user chooses **[Complete setup now]**:
+
+For each tool needing attention, provide specific guidance:
+
+**Google Workspace (OAuth):**
+```markdown
+### Google Workspace — Complete OAuth
+
+Google Workspace MCP is installed, but needs OAuth authorization.
+
+**To complete:**
+1. Run any Google command (e.g., "show my calendar")
+2. A browser window will open for Google OAuth
+3. Authorize the app
+4. Done — you'll see ✓ Connected
+
+[Try it now: Run a Google command] [Skip for now]
+```
+
+**Supabase (OAuth):**
+```markdown
+### Supabase — Complete OAuth
+
+Supabase MCP is installed, but needs OAuth authorization.
+
+**To complete:**
+1. Run any Supabase query (e.g., "show my Supabase tables")
+2. A browser window will open for Supabase OAuth
+3. Authorize the app
+4. Done — you'll see ✓ Connected
+
+[Try it now: Run a Supabase command] [Skip for now]
+```
+
+**Notion (API Key):**
+```markdown
+### Notion — Set API Key
+
+Notion MCP needs your API key to connect.
+
+**To complete:**
+1. Go to https://www.notion.so/my-integrations
+2. Create an integration and copy the token
+3. Add to your shell profile:
+   ```bash
+   export NOTION_API_KEY="your-token-here"
+   ```
+4. Restart your terminal
+
+[I've set it up — verify now] [Skip for now]
+```
+
+**Figma (OAuth):**
+```markdown
+### Figma — Complete OAuth
+
+Figma MCP is installed, but needs OAuth authorization.
+
+**To complete:**
+1. Run any Figma command or paste a Figma URL
+2. A browser window will open for Figma OAuth
+3. Authorize the app
+4. Done — you'll see ✓ Connected
+
+[Try it now: Run a Figma command] [Skip for now]
+```
+
+### Step 6.4: Final Status Check
+
+After guided completion (or if user skips):
+
+```markdown
+## Setup Summary
+
+**Ready to Use:**
+✓ GitHub — Tracking opensesh/BOS-3.0
+✓ Figma — Connected via OAuth
+✓ Dub.co — 15 links tracked
+
+**Needs Attention (will prompt when used):**
+⚠ Google Workspace — OAuth required (first use)
+⚠ Notion — NOTION_API_KEY not set
+
+**Skipped:**
+— Slack (can add later)
+
+[Save and finish] [Continue fixing]
+```
+
+### Step 6.5: Store Verification Status
+
+Store connection status in config for dashboard awareness:
+
+```yaml
+pillars:
+  operations:
+    tools:
+      - id: google_workspace
+        status: installed  # Not "connected" yet
+        auth_status: oauth_pending
+        auth_guidance: "Run any Google command to complete OAuth"
+      - id: notion
+        status: configured
+        auth_status: env_var_missing
+        auth_guidance: "Set NOTION_API_KEY in your environment"
+```
+
+---
+
+## Skills Config Format
+
+Store all skill selections in config:
 
 ```yaml
 skills:
-  design_quality:
-    - design_audit
-    - a11y_audit
-  research:
-    - competitor_scan
-    - mood_board
-    - variation_sprint
-  content:
-    - copy_variants
-    - content_brief
-  development:
-    - research_summary
   auto_activating:
-    - brand_guidelines
-    - frontend_design
-    - design_system_quality
-    - verification_before_completion
-    - systematic_debugging
+    enabled: true
+    items:
+      - brand_guidelines
+      - frontend_design
+      - design_system_quality
+      - verification_before_completion
+      - systematic_debugging
+
+utility_commands:
+  enabled: true
+  categories:
+    - logistics
+    - content
+    - development
+    - design
 ```
 
 ---
