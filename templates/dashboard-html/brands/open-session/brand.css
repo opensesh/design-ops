@@ -108,6 +108,22 @@
   --shadow-sm: 0px 1px 3px rgba(25, 25, 25, 0.06), 0px 1px 2px rgba(25, 25, 25, 0.04);
   --shadow-md: 0px 4px 8px -2px rgba(25, 25, 25, 0.08), 0px 2px 4px -2px rgba(25, 25, 25, 0.04);
   --shadow-lg: 0px 12px 16px -4px rgba(25, 25, 25, 0.06), 0px 4px 6px -2px rgba(25, 25, 25, 0.02);
+
+  /* ============================================
+     INTERACTION TOKENS
+     ============================================ */
+
+  /* Transition timing */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+
+  /* Hover state backgrounds */
+  --bg-hover: var(--color-gray-100);
+  --bg-active: var(--color-gray-200);
+
+  /* Focus ring */
+  --focus-ring: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--color-aperol);
 }
 
 /* ============================================
@@ -141,6 +157,10 @@
   --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0px 4px 8px -2px rgba(0, 0, 0, 0.3), 0px 2px 4px -2px rgba(0, 0, 0, 0.2);
   --shadow-lg: 0px 12px 16px -4px rgba(0, 0, 0, 0.3), 0px 4px 6px -2px rgba(0, 0, 0, 0.15);
+
+  /* Hover state backgrounds (dark mode) */
+  --bg-hover: #333333;
+  --bg-active: #3d3d3d;
 
   /* Status Colors (dark mode) */
   --color-success-50: #142d1f;

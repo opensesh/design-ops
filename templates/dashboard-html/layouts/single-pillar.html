@@ -48,18 +48,26 @@
 
 </div>
 
-<!-- Pillar-specific Insights -->
+<!-- Pillar-specific Insights - Elevated Treatment -->
 {{#HAS_INSIGHTS}}
-<div class="mt-8 rounded-xl border p-6" style="background-color: var(--bg-secondary); border-color: var(--border-secondary);">
-  <div class="flex items-center gap-2 mb-4">
-    <i data-lucide="lightbulb" class="w-5 h-5" style="color: var(--color-brand-600);"></i>
-    <h3 class="font-semibold" style="color: var(--fg-primary);">{{PILLAR_NAME}} Insights</h3>
+<div class="mt-8 rounded-2xl border-2 p-8 insights-card" style="border-color: var(--border-brand);">
+  <!-- Header with gradient accent -->
+  <div class="flex items-center gap-3 mb-6">
+    <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background-color: var(--color-brand-50);">
+      <i data-lucide="lightbulb" class="w-5 h-5" style="color: var(--color-aperol);"></i>
+    </div>
+    <div>
+      <h3 class="text-lg font-semibold" style="color: var(--fg-primary);">{{PILLAR_NAME}} Insights</h3>
+      <p class="text-xs" style="color: var(--fg-tertiary);">AI-generated observations from your data</p>
+    </div>
   </div>
-  <ul class="space-y-2">
+
+  <!-- Insights list with enhanced styling -->
+  <ul class="space-y-4">
     {{#INSIGHTS}}
-    <li class="flex items-start gap-2">
-      <span class="text-xs mt-1" style="color: var(--color-brand-500);">•</span>
-      <span class="text-sm" style="color: var(--fg-secondary);">{{INSIGHT_TEXT}}</span>
+    <li class="flex items-start gap-3 p-3 rounded-lg" style="background-color: var(--bg-secondary);">
+      <span class="w-2 h-2 rounded-full mt-2 flex-shrink-0" style="background-color: var(--color-aperol);"></span>
+      <span class="text-sm leading-relaxed" style="color: var(--fg-primary);">{{INSIGHT_TEXT}}</span>
     </li>
     {{/INSIGHTS}}
   </ul>
@@ -70,7 +78,7 @@
 <div class="mt-6 flex flex-wrap gap-3 no-print">
   <button
     onclick="window.print()"
-    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border"
+    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border quick-action"
     style="background-color: var(--bg-secondary); border-color: var(--border-secondary); color: var(--fg-secondary);"
   >
     <i data-lucide="printer" class="w-4 h-4"></i>
@@ -82,7 +90,7 @@
   {{#OTHER_PILLARS}}
   <a
     href="dashboard-{{PILLAR_ID}}.html"
-    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border hover:opacity-80"
+    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border quick-action"
     style="background-color: var(--bg-tertiary); border-color: var(--border-secondary); color: var(--fg-secondary);"
   >
     {{PILLAR_NAME}}

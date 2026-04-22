@@ -1,7 +1,7 @@
 <!--
   Stat Card Component
 
-  Displays a single metric with optional trend indicator.
+  Displays a single metric with optional trend indicator, links, and hero variant.
 
   Variables:
     {{ID}}            - Unique identifier for the card
@@ -10,6 +10,9 @@
     {{TREND}}         - Trend text (e.g., "+12%" or "-3")
     {{TREND_COLOR}}   - Tailwind class: "text-green-500", "text-red-500", "text-gray-500"
     {{ICON}}          - Lucide icon name (optional)
+    {{URL}}           - Optional link to source (dashboard, tool, etc.)
+    {{HAS_URL}}       - Boolean: whether card links to a source
+    {{IS_HERO}}       - Boolean: use hero treatment (larger value, accent border)
 
   Data Format:
     {
@@ -18,11 +21,47 @@
       "title": "Tasks Due",
       "value": 12,
       "trend": "+3",
-      "trend_direction": "up" | "down" | "neutral"
+      "trend_direction": "up" | "down" | "neutral",
+      "url": "https://notion.so/tasks",
+      "is_hero": true
     }
 -->
 
-<div id="stat-{{ID}}" class="rounded-xl border p-6" style="background-color: var(--bg-secondary); border-color: var(--border-secondary);">
+{{#HAS_URL}}
+<a href="{{URL}}" target="_blank" rel="noopener noreferrer" id="stat-{{ID}}" class="block rounded-xl border p-6 card-interactive external-link {{#IS_HERO}}card-hero{{/IS_HERO}}" style="background-color: var(--bg-secondary); border-color: var(--border-secondary);">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <!-- Optional icon -->
+      {{#ICON}}
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: var(--color-brand-50);">
+        <i data-lucide="{{ICON}}" class="w-5 h-5" style="color: var(--color-brand-600);"></i>
+      </div>
+      {{/ICON}}
+      <p class="text-sm font-medium link-title transition-colors" style="color: var(--fg-secondary);">{{TITLE}}</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <!-- Trend indicator -->
+      {{#TREND}}
+      <div class="flex items-center gap-1 {{TREND_COLOR}}">
+        {{#TREND_UP}}
+        <i data-lucide="trending-up" class="w-4 h-4"></i>
+        {{/TREND_UP}}
+        {{#TREND_DOWN}}
+        <i data-lucide="trending-down" class="w-4 h-4"></i>
+        {{/TREND_DOWN}}
+        <span class="text-sm font-medium">{{TREND}}</span>
+      </div>
+      {{/TREND}}
+      <!-- External link indicator -->
+      <i data-lucide="external-link" class="w-4 h-4 link-indicator"></i>
+    </div>
+  </div>
+  <p class="mt-3 font-semibold tracking-tight {{#IS_HERO}}stat-value{{/IS_HERO}} {{^IS_HERO}}text-3xl{{/IS_HERO}}" style="color: var(--fg-primary);">{{VALUE}}</p>
+</a>
+{{/HAS_URL}}
+
+{{^HAS_URL}}
+<div id="stat-{{ID}}" class="rounded-xl border p-6 card-interactive {{#IS_HERO}}card-hero{{/IS_HERO}}" style="background-color: var(--bg-secondary); border-color: var(--border-secondary);">
   <div class="flex items-center justify-between">
     <div class="flex items-center gap-3">
       <!-- Optional icon -->
@@ -46,5 +85,6 @@
     </div>
     {{/TREND}}
   </div>
-  <p class="mt-3 text-3xl font-semibold tracking-tight" style="color: var(--fg-primary);">{{VALUE}}</p>
+  <p class="mt-3 font-semibold tracking-tight {{#IS_HERO}}stat-value{{/IS_HERO}} {{^IS_HERO}}text-3xl{{/IS_HERO}}" style="color: var(--fg-primary);">{{VALUE}}</p>
 </div>
+{{/HAS_URL}}

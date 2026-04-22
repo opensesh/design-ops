@@ -85,6 +85,102 @@
       transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
+    /* Card hover effects */
+    .card-interactive {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .card-interactive:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-brand);
+    }
+
+    /* Activity item hover */
+    .activity-item {
+      transition: background-color 0.15s ease;
+      border-radius: 8px;
+      margin: -4px -8px;
+      padding: 8px;
+    }
+    .activity-item:hover {
+      background-color: var(--bg-tertiary);
+    }
+
+    /* External link indicator */
+    .external-link {
+      position: relative;
+    }
+    .external-link .link-indicator {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      color: var(--fg-tertiary);
+    }
+    .external-link:hover .link-indicator {
+      opacity: 1;
+      color: var(--color-aperol);
+    }
+    .external-link:hover .link-title {
+      color: var(--color-aperol);
+    }
+
+    /* Hero stat card */
+    .card-hero {
+      border-left: 3px solid var(--color-aperol);
+    }
+    .card-hero .stat-value {
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    /* Priority accent border */
+    .card-priority {
+      border-left: 3px solid var(--color-aperol);
+    }
+
+    /* Quick action button */
+    .quick-action {
+      transition: background-color 0.15s ease, transform 0.15s ease;
+    }
+    .quick-action:hover {
+      background-color: var(--bg-tertiary);
+      transform: translateY(-1px);
+    }
+
+    /* ASCII art styling */
+    .ascii-art {
+      font-family: var(--font-mono);
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+
+    /* Insights elevation */
+    .insights-card {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+      border-width: 2px;
+    }
+
+    /* Connected tool status */
+    .tool-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+    }
+    .tool-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .tool-status-dot.connected {
+      background-color: var(--color-success-500);
+    }
+    .tool-status-dot.warning {
+      background-color: var(--color-warning-500);
+    }
+    .tool-status-dot.error {
+      background-color: var(--color-error-500);
+    }
+
     /* Print styles */
     @media print {
       .no-print { display: none !important; }
@@ -94,32 +190,70 @@
   </style>
 </head>
 <body class="min-h-screen">
-  <!-- Header -->
-  <header class="sticky top-0 z-10 border-b" style="background-color: var(--bg-secondary); border-color: var(--border-secondary);">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <h1 class="text-2xl font-semibold" style="color: var(--fg-primary);">{{TITLE}}</h1>
-          <p class="text-sm mt-1" style="color: var(--fg-secondary);">{{SUBTITLE}}</p>
-        </div>
-        <div class="flex items-center gap-4 no-print">
-          <!-- Dark mode toggle -->
-          <button
-            id="theme-toggle"
-            class="p-2 rounded-lg border"
-            style="background-color: var(--bg-tertiary); border-color: var(--border-secondary);"
-            aria-label="Toggle dark mode"
+  <!-- Header with ASCII Branding -->
+  <header class="border-b" style="background-color: var(--bg-secondary); border-color: var(--border-secondary);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <!-- Desktop: Full ASCII art -->
+      <pre class="hidden md:block text-center ascii-art select-none" style="color: var(--color-aperol); font-size: 8px;">
+██████╗ ███████╗███████╗██╗ ██████╗ ███╗   ██╗     ██████╗ ██████╗ ███████╗
+██╔══██╗██╔════╝██╔════╝██║██╔════╝ ████╗  ██║    ██╔═══██╗██╔══██╗██╔════╝
+██║  ██║█████╗  ███████╗██║██║  ███╗██╔██╗ ██║    ██║   ██║██████╔╝███████╗
+██║  ██║██╔══╝  ╚════██║██║██║   ██║██║╚██╗██║    ██║   ██║██╔═══╝ ╚════██║
+██████╔╝███████╗███████║██║╚██████╔╝██║ ╚████║    ╚██████╔╝██║     ███████║
+╚═════╝ ╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚═╝     ╚══════╝
+      </pre>
+
+      <!-- Mobile: Simple text with Aperol underline -->
+      <div class="md:hidden text-center">
+        <h1 class="text-xl font-bold tracking-widest" style="color: var(--color-aperol);">DESIGN-OPS</h1>
+        <div class="w-16 h-0.5 mx-auto mt-2" style="background-color: var(--color-aperol);"></div>
+      </div>
+
+      <!-- Subtitle row -->
+      <p class="text-center mt-4 text-sm" style="color: var(--fg-secondary);">
+        {{TITLE}} · {{SUBTITLE}}
+      </p>
+
+      <!-- Header actions row -->
+      <div class="flex items-center justify-center gap-4 mt-4 no-print">
+        <!-- Dark mode toggle -->
+        <button
+          id="theme-toggle"
+          class="p-2 rounded-lg border quick-action"
+          style="background-color: var(--bg-tertiary); border-color: var(--border-secondary);"
+          aria-label="Toggle dark mode"
+        >
+          <i data-lucide="sun" class="w-5 h-5 dark:hidden" style="color: var(--fg-secondary);"></i>
+          <i data-lucide="moon" class="w-5 h-5 hidden dark:block" style="color: var(--fg-secondary);"></i>
+        </button>
+        <!-- Refresh timestamp -->
+        <span class="text-xs" style="color: var(--fg-tertiary);">
+          Generated: {{TIMESTAMP}}
+        </span>
+      </div>
+    </div>
+
+    <!-- Quick Actions Bar -->
+    {{#HAS_QUICK_ACTIONS}}
+    <div class="border-t no-print" style="border-color: var(--border-tertiary);">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div class="flex items-center justify-center gap-2 flex-wrap">
+          {{#QUICK_ACTIONS}}
+          <a
+            href="{{ACTION_URL}}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm quick-action"
+            style="border-color: var(--border-secondary); color: var(--fg-secondary);"
           >
-            <i data-lucide="sun" class="w-5 h-5 dark:hidden" style="color: var(--fg-secondary);"></i>
-            <i data-lucide="moon" class="w-5 h-5 hidden dark:block" style="color: var(--fg-secondary);"></i>
-          </button>
-          <!-- Refresh timestamp -->
-          <span class="text-xs" style="color: var(--fg-tertiary);">
-            Generated: {{TIMESTAMP}}
-          </span>
+            <i data-lucide="{{ACTION_ICON}}" class="w-4 h-4"></i>
+            <span>{{ACTION_LABEL}}</span>
+          </a>
+          {{/QUICK_ACTIONS}}
         </div>
       </div>
     </div>
+    {{/HAS_QUICK_ACTIONS}}
   </header>
 
   <!-- Main content -->
@@ -127,12 +261,27 @@
     {{CONTENT}}
   </main>
 
-  <!-- Footer -->
+  <!-- Footer with Connected Tools Status -->
   <footer class="border-t py-6 mt-8" style="border-color: var(--border-secondary);">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Connected Tools Status -->
+      {{#HAS_CONNECTED_TOOLS}}
+      <div class="flex items-center justify-center gap-4 flex-wrap mb-4" style="color: var(--fg-tertiary);">
+        <span class="text-xs font-medium">Connected:</span>
+        {{#CONNECTED_TOOLS}}
+        <span class="tool-status">
+          <span class="tool-status-dot {{TOOL_STATUS_CLASS}}"></span>
+          <span>{{TOOL_NAME}}</span>
+        </span>
+        {{/CONNECTED_TOOLS}}
+      </div>
+      {{/HAS_CONNECTED_TOOLS}}
+
+      <!-- Attribution -->
       <p class="text-center text-sm" style="color: var(--fg-tertiary);">
-        Generated by <strong>DESIGN-OPS</strong> &middot;
+        Generated by <strong style="color: var(--fg-secondary);">DESIGN-OPS</strong> &middot;
         <a href="https://github.com/opensesh/DESIGN-OPS" class="hover:underline" style="color: var(--fg-brand-primary);">View on GitHub</a>
+        &middot; v{{VERSION}}
       </p>
     </div>
   </footer>

@@ -36,6 +36,16 @@ mappings:
       calendar_events: "calendar"
       pageviews: "eye"
       revenue: "dollar-sign"
+    # Enhanced fields for interactivity
+    url_patterns:
+      tasks_due: "https://notion.so/..."
+      open_prs: "https://github.com/{org}/{repo}/pulls"
+      commits_today: "https://github.com/{org}/{repo}/commits"
+      calendar_events: "https://calendar.google.com/..."
+    hero_treatment:
+      description: "First metric in each pillar gets hero treatment"
+      applies_to: "first metric per pillar"
+      style: "larger value, accent border-left"
 
   # Time series data (line chart)
   time_series:
@@ -71,7 +81,7 @@ mappings:
   # Activity/event lists
   activity_list:
     component: list-activity
-    description: "Ordered events with timestamps"
+    description: "Ordered events with timestamps and clickable links"
     data_shape:
       - "array of activities"
       - "events with times"
@@ -89,6 +99,16 @@ mappings:
       design_updates: "figma"
       recent_deploys: "rocket"
       recent_pages: "file-text"
+    # Enhanced fields for interactivity
+    url_patterns:
+      calendar_events: "https://calendar.google.com/event?eid={event_id}"
+      recent_commits: "https://github.com/{org}/{repo}/commit/{sha}"
+      open_prs: "https://github.com/{org}/{repo}/pull/{number}"
+      design_updates: "https://figma.com/file/{file_key}"
+      recent_deploys: "https://github.com/{org}/{repo}/actions/runs/{run_id}"
+    interaction:
+      hover_state: "bg-tertiary background"
+      external_indicator: "↗ icon appears on hover"
 
   # Multi-column tabular data
   tabular:
