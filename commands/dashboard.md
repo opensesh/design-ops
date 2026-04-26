@@ -2,10 +2,13 @@
 
 Unified dashboard command that generates pillar × timeframe reports from connected tools.
 
+**Default output: HTML** — Opens a visual dashboard in your browser.
+Use `cli` flag for terminal markdown output.
+
 ## Trigger
 
 ```bash
-/design-ops:dashboard [pillar] [timeframe]
+/design-ops:dashboard [pillar] [timeframe] [cli]
 ```
 
 ## Parameters
@@ -28,25 +31,36 @@ Unified dashboard command that generates pillar × timeframe reports from connec
 | `quarterly` | `quarter`, `q` | Quarter-to-date metrics | — |
 | `ytd` | `year`, `y` | Year-to-date overview | — |
 
+### Output Mode (optional)
+
+| Value | Aliases | Description | Default |
+|-------|---------|-------------|---------|
+| omitted | — | HTML dashboard opens in browser | ✓ |
+| `cli` | `--cli`, `text`, `md` | CLI markdown output in terminal | — |
+
 ---
 
 ## Argument Parsing Logic
 
 ```
-/design-ops:dashboard                    → all pillars, daily
-/design-ops:dashboard ops                → operations, daily
-/design-ops:dashboard weekly             → all pillars, weekly
-/design-ops:dashboard ops weekly         → operations, weekly
-/design-ops:dashboard design quarterly   → design, quarterly
-/design-ops:dashboard analytics ytd      → analytics, year-to-date
+/design-ops:dashboard                    → HTML output, all pillars, daily
+/design-ops:dashboard cli                → CLI output, all pillars, daily
+/design-ops:dashboard --cli              → CLI output, all pillars, daily
+/design-ops:dashboard ops                → HTML output, operations, daily
+/design-ops:dashboard weekly             → HTML output, all pillars, weekly
+/design-ops:dashboard ops weekly         → HTML output, operations, weekly
+/design-ops:dashboard ops weekly cli     → CLI output, operations, weekly
+/design-ops:dashboard design quarterly   → HTML output, design, quarterly
+/design-ops:dashboard analytics ytd cli  → CLI output, analytics, year-to-date
 ```
 
 **Detection rules:**
-1. No args → all pillars, daily (defaults)
-2. One arg → detect if pillar or timeframe, fill default for other
+1. Check for `cli`, `--cli`, `text`, or `md` → set output mode to CLI, otherwise HTML
+2. No remaining args → all pillars, daily (defaults)
+3. One remaining arg → detect if pillar or timeframe, fill default for other
    - Pillar keywords: `ops`, `operations`, `design`, `analytics`
    - Timeframe keywords: `daily`, `today`, `d`, `weekly`, `week`, `w`, `quarterly`, `quarter`, `q`, `ytd`, `year`, `y`
-3. Two args → pillar first, timeframe second
+4. Two remaining args → pillar first, timeframe second
 
 ---
 
@@ -86,12 +100,33 @@ pillars:
 
 ## Workflow
 
+### Step 0: Quick Status Check
+
+Before fetching data, perform a lightweight validation:
+
+1. **Read** tool statuses from `~/.claude/design-ops-config.yaml`
+2. **Check** for any tools with `status: needs_setup` or `auth_status: oauth_pending`
+3. **If issues found:**
+   ```markdown
+   ⚠ Some tools need attention before dashboard can show full data:
+
+   | Tool | Issue | Fix |
+   |------|-------|-----|
+   | {tool} | {issue} | Run `/design-ops:validate --fix` |
+
+   Continuing with available tools...
+   ```
+4. **Continue** with tools that are `status: connected` (graceful degradation)
+
 ### Step 1: Parse Arguments
 
-1. **Parse** command arguments
-2. **Detect** pillar vs timeframe
-3. **Apply defaults** for missing values
-4. **Validate** pillar is enabled in config
+1. **Check** for output mode flag (`cli`, `--cli`, `text`, `md`)
+   - If present: set output_mode = "cli"
+   - Otherwise: set output_mode = "html" (default)
+2. **Parse** remaining arguments
+3. **Detect** pillar vs timeframe
+4. **Apply defaults** for missing values
+5. **Validate** pillar is enabled in config
 
 ### Step 2: Load Config
 
@@ -192,9 +227,35 @@ For each tool in analytics.tools where status == connected:
 - Quarterly: Quarter trends, campaign performance, conversion funnel
 - YTD: Annual traffic totals, YoY comparison, total growth metrics
 
-### Step 4: Render Output
+### Step 4: Route by Output Mode
 
-Generate report using the appropriate template for pillar × timeframe.
+**If output_mode == "html" (default):**
+
+Follow the HTML dashboard workflow from `dashboard-html.md`:
+
+1. **Load** `templates/dashboard-html/base.html`
+2. **Inject** brand CSS (user's or default Open Session)
+3. **Inject** layout template (single-pillar or all-pillars)
+4. **Populate** component templates with fetched data
+5. **Embed** chart data as JSON for Chart.js initialization
+6. **Archive** previous dashboard (if exists)
+7. **Write** to `~/.claude/design-ops/dashboard.html`
+8. **Open** in browser (platform-specific command):
+   - macOS: `open ~/.claude/design-ops/dashboard.html`
+   - Linux: `xdg-open ~/.claude/design-ops/dashboard.html`
+   - Windows: `start ~/.claude/design-ops/dashboard.html`
+9. **Report** to user:
+   ```markdown
+   Dashboard opened in your browser.
+
+   File saved to: ~/.claude/design-ops/dashboard.html
+
+   **Tip:** Run `/design-ops:dashboard cli` for terminal output.
+   ```
+
+**If output_mode == "cli":**
+
+Generate CLI markdown report using the templates below.
 
 **IMPORTANT:** When rendering output:
 - Show actual data values from tool responses
@@ -741,19 +802,22 @@ Shows all enabled pillars with weekly timeframe.
 
 | Command | Purpose |
 |---------|---------|
-| `/design-ops:dashboard-html` | Generate static HTML dashboard viewable in browser |
+| `/design-ops:dashboard` | Generate HTML dashboard (default) or CLI output with `cli` flag |
+| `/design-ops:dashboard cli` | Generate CLI markdown output in terminal |
+| `/design-ops:validate` | Validate all tool connections |
+| `/design-ops:validate --fix` | Validate and fix broken connections interactively |
 | `/design-ops:configure` | Update DESIGN-OPS configuration |
 | `/design-ops:setup` | Initial setup wizard |
 
-### Visual Dashboard Option
+### Output Modes
 
-For a visual, responsive dashboard that works on mobile:
-
+**HTML (default):**
 ```bash
-/design-ops:dashboard-html [pillar] [timeframe]
+/design-ops:dashboard              # Opens HTML dashboard in browser
+/design-ops:dashboard ops weekly   # Operations, weekly, HTML
 ```
 
-This generates a single HTML file with:
+Generates a single HTML file with:
 - Responsive layout (mobile, tablet, desktop)
 - Dark mode support (automatic)
 - Interactive charts (Chart.js)
@@ -761,6 +825,21 @@ This generates a single HTML file with:
 
 Output: `~/.claude/design-ops/dashboard.html`
 
+**CLI (terminal markdown):**
+```bash
+/design-ops:dashboard cli              # CLI output, all pillars, daily
+/design-ops:dashboard ops weekly cli   # CLI output, operations, weekly
+```
+
+Outputs markdown directly in the terminal for quick viewing.
+
+### Troubleshooting
+
+If tools show errors:
+1. Run `/design-ops:validate` to check all tool connections
+2. Run `/design-ops:validate --fix` to fix issues interactively
+3. See `references/troubleshooting.md` for tool-specific runbooks
+
 ---
 
-*Version: 1.1*
+*Version: 1.2*
