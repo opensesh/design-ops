@@ -325,6 +325,190 @@
       body { background: white !important; }
       .bg-bg-secondary { background: #f9fafb !important; }
     }
+
+    /* ============================================
+       DATA FRESHNESS INDICATORS
+       ============================================ */
+    .freshness-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .freshness-fresh {
+      background-color: var(--color-success-50);
+      color: var(--color-success-500);
+    }
+    .freshness-recent {
+      background-color: var(--bg-tertiary);
+      color: var(--fg-tertiary);
+    }
+    .freshness-stale {
+      background-color: var(--color-warning-50);
+      color: var(--color-warning-500);
+    }
+    .freshness-very-stale {
+      background-color: var(--color-error-50);
+      color: var(--color-error-500);
+    }
+    .freshness-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      animation: freshness-pulse 2s ease-in-out infinite;
+    }
+    @keyframes freshness-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .freshness-fresh .freshness-dot { background-color: var(--color-success-500); }
+    .freshness-stale .freshness-dot { background-color: var(--color-warning-500); animation: none; }
+    .freshness-very-stale .freshness-dot { background-color: var(--color-error-500); animation: none; }
+
+    /* Source footnote styling */
+    .source-footnote {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-secondary);
+      color: var(--fg-quaternary);
+    }
+    .source-footnote a {
+      color: var(--fg-tertiary);
+      transition: color 0.15s ease;
+    }
+    .source-footnote a:hover {
+      color: var(--color-aperol);
+    }
+
+    /* ============================================
+       RESPONSIVE MOBILE ENHANCEMENTS
+       ============================================ */
+
+    /* Mobile: Sections collapsed by default */
+    @media (max-width: 640px) {
+      /* Collapse non-primary sections on mobile */
+      .collapsible-section:not([data-default-open]):not(.open) .collapsible-content {
+        display: none;
+      }
+      .collapsible-section:not([data-default-open]):not(.open) .collapsible-header .chevron {
+        transform: rotate(180deg);
+      }
+
+      /* Full-width charts */
+      .chart-container {
+        height: 180px !important;
+      }
+
+      /* Larger touch targets */
+      .touch-target {
+        min-height: 44px;
+        min-width: 44px;
+      }
+
+      /* Horizontal scroll for tables */
+      .table-scroll-mobile {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* Stack stat cards */
+      .stat-grid-mobile {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Simplify activity items */
+      .activity-item {
+        padding: 12px 8px;
+      }
+      .activity-time {
+        font-size: 10px;
+        padding: 2px 6px;
+      }
+
+      /* Hide non-essential elements */
+      .hide-on-mobile {
+        display: none !important;
+      }
+
+      /* ASCII logo hidden (already in base, reinforced) */
+      .ascii-art {
+        display: none !important;
+      }
+
+      /* Mobile timeframe selector */
+      .mobile-timeframe-selector {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 8px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .mobile-timeframe-selector::-webkit-scrollbar {
+        display: none;
+      }
+      .mobile-timeframe-selector .toggle-tab {
+        flex-shrink: 0;
+        padding: 8px 16px;
+      }
+    }
+
+    /* Tablet: 2 columns */
+    @media (min-width: 641px) and (max-width: 1024px) {
+      .pillar-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      .stat-grid-tablet {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Desktop: Full layout */
+    @media (min-width: 1025px) {
+      .pillar-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Mobile-first section header */
+    @media (max-width: 640px) {
+      .section-header-mobile {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .section-header-mobile .section-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+
+    /* Responsive spacing */
+    @media (max-width: 640px) {
+      .responsive-padding {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .responsive-gap {
+        gap: 12px;
+      }
+    }
+    @media (min-width: 641px) {
+      .responsive-padding {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      .responsive-gap {
+        gap: 16px;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen">
@@ -427,6 +611,88 @@
   <!-- Initialize Lucide Icons -->
   <script>
     lucide.createIcons();
+  </script>
+
+  <!-- Data Freshness Utilities -->
+  <script>
+    // Calculate and display data freshness
+    function getFreshnessClass(timestamp) {
+      if (!timestamp) return 'freshness-recent';
+
+      const now = Date.now();
+      const fetchTime = new Date(timestamp).getTime();
+      const diffMinutes = (now - fetchTime) / (1000 * 60);
+
+      if (diffMinutes < 5) return 'freshness-fresh';
+      if (diffMinutes < 60) return 'freshness-recent';
+      if (diffMinutes < 1440) return 'freshness-stale'; // 24 hours
+      return 'freshness-very-stale';
+    }
+
+    function formatFreshnessTime(timestamp) {
+      if (!timestamp) return '';
+
+      const now = Date.now();
+      const fetchTime = new Date(timestamp).getTime();
+      const diffMinutes = Math.floor((now - fetchTime) / (1000 * 60));
+
+      if (diffMinutes < 1) return 'just now';
+      if (diffMinutes < 60) return `${diffMinutes}m ago`;
+
+      const diffHours = Math.floor(diffMinutes / 60);
+      if (diffHours < 24) return `${diffHours}h ago`;
+
+      const diffDays = Math.floor(diffHours / 24);
+      return `${diffDays}d ago`;
+    }
+
+    // Update all freshness indicators on page load
+    function updateFreshnessIndicators() {
+      document.querySelectorAll('[data-fetch-time]').forEach(el => {
+        const timestamp = el.dataset.fetchTime;
+        const freshnessClass = getFreshnessClass(timestamp);
+        const freshnessText = formatFreshnessTime(timestamp);
+
+        // Update class
+        el.className = el.className.replace(/freshness-\w+/g, '');
+        el.classList.add('freshness-indicator', freshnessClass);
+
+        // Update text if element has a time span
+        const timeSpan = el.querySelector('.freshness-time');
+        if (timeSpan) {
+          timeSpan.textContent = freshnessText;
+        }
+      });
+    }
+
+    // Run on load and every minute
+    updateFreshnessIndicators();
+    setInterval(updateFreshnessIndicators, 60000);
+  </script>
+
+  <!-- Mobile Section Toggle -->
+  <script>
+    // On mobile, collapse all sections except the first
+    function initMobileSections() {
+      if (window.innerWidth <= 640) {
+        const sections = document.querySelectorAll('.collapsible-section');
+        sections.forEach((section, index) => {
+          if (index > 0 && !section.hasAttribute('data-default-open')) {
+            section.classList.remove('open');
+          }
+        });
+      }
+    }
+
+    // Run on load
+    initMobileSections();
+
+    // Re-run on resize (debounced)
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(initMobileSections, 250);
+    });
   </script>
 
   <!-- Section Toggle -->
