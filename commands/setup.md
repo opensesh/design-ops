@@ -395,6 +395,145 @@ Enter your API token (or press Enter to skip):
 
 ---
 
+### Step 1.4d: Validate Tool Connection (MANDATORY)
+
+**CRITICAL:** After EVERY tool installation or configuration, validate the connection immediately.
+Setup should NOT proceed until validation passes OR user explicitly skips.
+
+#### Validation Flow for MCP Tools (stdio)
+
+After running `claude mcp add {tool}`:
+
+```markdown
+### {Tool} — Verifying Connection
+
+Checking {Tool} MCP...
+
+[Spinner while testing]
+```
+
+Make a test MCP call appropriate for the tool:
+- **Notion:** `mcp__notion__API-get-self` or `mcp__notion__API-post-search`
+- **GitHub:** `mcp__github__search_repositories` (simple query)
+- **Google Workspace:** `mcp__google-workspace__list_calendars`
+
+**If successful:**
+```markdown
+✓ {Tool} is connected and responding!
+
+{Tool-specific success details, e.g.:}
+- Connected to workspace: "{workspace_name}"
+- Found {count} accessible items
+
+[Continue to next tool →]
+```
+
+**If failed:**
+```markdown
+✗ {Tool} connection failed
+
+Error: {specific_error_message}
+
+**To fix:**
+{Tool-specific fix guidance from troubleshooting runbook}
+
+[Retry] [Skip this tool] [Get help]
+```
+
+#### Validation Flow for HTTP MCPs (OAuth required)
+
+For tools like Google Workspace, Supabase, Figma:
+
+```markdown
+### {Tool} — OAuth Authorization
+
+{Tool} requires browser authorization.
+
+**Next step:** I'll trigger the OAuth flow. A browser window will open.
+
+[Start OAuth flow]
+```
+
+After triggering OAuth:
+
+1. Make a test call that requires auth
+2. If the MCP prompts for OAuth, guide user through browser flow
+3. After OAuth completion, verify with another test call
+
+**OAuth successful:**
+```markdown
+✓ {Tool} authorized successfully!
+
+Connected to: {account_name/email}
+Access: {scope_summary}
+
+[Continue to next tool →]
+```
+
+**OAuth not completed:**
+```markdown
+✗ OAuth not completed
+
+The browser authorization didn't complete. This can happen if:
+- You cancelled the authorization
+- The browser window was closed
+- There was a network error
+
+[Try again] [Skip this tool]
+```
+
+#### Validation Flow for API Tools
+
+After user provides API token:
+
+```markdown
+### {Tool} — Validating API Key
+
+Checking your {ENV_VAR} token...
+
+[Makes test API call]
+```
+
+**Token valid:**
+```markdown
+✓ Token is valid!
+
+Connected to: {workspace_name/account_name}
+Permissions: {permission_summary}
+
+[Continue to next tool →]
+```
+
+**Token invalid:**
+```markdown
+✗ Token invalid or expired
+
+The API returned: {error_message}
+
+**To fix:**
+1. Go to {service_url}
+2. Generate a new token
+3. {1Password or env var guidance based on detected secrets manager}
+
+[I've updated it — retry] [Skip this tool]
+```
+
+#### Validation Status in Config
+
+Store validation results in config for each tool:
+
+```yaml
+tools:
+  - id: notion
+    status: connected          # or: needs_setup, oauth_pending, skipped
+    validated_at: "2024-01-15T10:30:00Z"
+    validation_details:
+      workspace: "My Workspace"
+      capabilities: [pages, databases, tasks]
+```
+
+---
+
 ### "I Need Help" — MCP vs API Education
 
 When user selects **[I need help]**, display this content:
@@ -1194,10 +1333,37 @@ Iterate through all pillars and categorize tools:
 
 ### Step 6.2: Present Verification Summary
 
-**If ALL tools are ready (✓ Connected):**
-Proceed directly to Final Synthesis — no gate needed.
+**CRITICAL:** Setup should NOT complete successfully unless:
+- All selected tools are validated as working, OR
+- User explicitly skips a tool (marked as skipped in config)
 
-**If ANY tool has "Needs Auth" or "API Config Needed" status:**
+**Always show verification summary before saving config:**
+
+```markdown
+## Setup Validation Summary
+
+Before saving your configuration, let's verify everything works:
+
+┌───────────────────┬──────────┬─────────────────────────────────────┐
+│ Tool              │ Status   │ Notes                               │
+├───────────────────┼──────────┼─────────────────────────────────────┤
+│ GitHub            │ ✓ Ready  │ Connected to 3 repos                │
+│ Notion            │ ✓ Ready  │ Connected to "Team Workspace"       │
+│ Google Workspace  │ ✓ Ready  │ OAuth completed                     │
+│ Figma             │ ✓ Ready  │ OAuth completed                     │
+│ Dub.co            │ ✓ Ready  │ 15 links tracked                    │
+│ Supabase          │ — Skipped│ User chose to skip                  │
+└───────────────────┴──────────┴─────────────────────────────────────┘
+
+All selected tools are validated!
+
+[Save configuration and finish]
+```
+
+**If ALL tools are ready (✓ Ready or — Skipped):**
+Proceed to Final Synthesis.
+
+**If ANY tool has "⚠ Needs Attention" status:**
 
 ```markdown
 ## Almost There — {count} Tool(s) Need Attention
@@ -1207,16 +1373,19 @@ Your configuration is saved, but some tools need additional setup to work:
 ┌───────────────────┬─────────────┬─────────────────────────────────────┐
 │ Tool              │ Status      │ Action Required                     │
 ├───────────────────┼─────────────┼─────────────────────────────────────┤
-│ Google Workspace  │ ⚠ Installed │ Complete OAuth (runs on first use)  │
-│ Supabase          │ ⚠ Installed │ OAuth login required                │
-│ Notion            │ ⚠ Configured│ Set NOTION_API_KEY env variable     │
+│ Google Workspace  │ ⚠ OAuth     │ Complete OAuth (browser auth)       │
+│ Supabase          │ ⚠ OAuth     │ OAuth login required                │
+│ Notion            │ ⚠ API Key   │ Set NOTION_API_KEY env variable     │
 └───────────────────┴─────────────┴─────────────────────────────────────┘
 
 **What would you like to do?**
-- [Complete setup now] — I'll guide you through each one
-- [Continue anyway] — Use what's working, fix these later
-- [Run a test] — Try the dashboard to see what works
+- [Complete setup now] — I'll guide you through each one (recommended)
+- [Skip these tools] — Mark as skipped, continue to finish
+- [Run /design-ops:validate later] — Save config, fix later
 ```
+
+**Important:** The "Continue anyway" option should mark tools as needing setup in config,
+not as connected. This prevents dashboard from showing misleading "Connected" status.
 
 ### Step 6.3: Guided Completion Flow
 
