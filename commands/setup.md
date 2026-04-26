@@ -34,6 +34,104 @@ if (web/co-work environment detected):
   Exit early
 ```
 
+### 1.5 Secrets Manager Detection
+
+Check for available secrets managers before proceeding with tool setup:
+
+```bash
+# Detection order (check for CLI availability)
+1. 1Password CLI: `which op` or `op --version`
+2. Bitwarden CLI: `which bw`
+3. macOS Keychain: `which security` (fallback)
+4. None detected
+```
+
+**If 1Password detected:**
+
+```markdown
+## Secure Secrets Management
+
+Found: **1Password CLI** (`op` command available)
+
+DESIGN-OPS can help you store API keys securely in 1Password.
+This keeps your credentials safe and shareable with your team.
+
+**Benefits:**
+- No plain-text secrets in config files
+- Easy rotation when keys expire
+- Team sharing without copying keys
+- Audit trail of access
+
+**What would you like to do?**
+- [Set up 1Password integration (recommended)] — I'll guide you through it
+- [I'll manage secrets myself] — Skip this step
+- [Tell me more] — Learn about secrets management
+```
+
+**[Set up 1Password integration]:**
+
+```markdown
+### 1Password Setup
+
+**Step 1: Create a vault (optional)**
+You can use your Personal vault or create a dedicated one:
+```bash
+op vault create "DESIGN-OPS" --description "API keys for DESIGN-OPS"
+```
+
+**Step 2: Add this to your shell profile (~/.zshrc or ~/.bashrc):**
+
+```bash
+# DESIGN-OPS Secrets via 1Password
+load_design_ops_secrets() {
+  if ! op account get &>/dev/null; then
+    eval $(op signin)
+  fi
+  export NOTION_API_KEY="$(op read 'op://DESIGN-OPS/Notion API/credential' 2>/dev/null)"
+  export GA4_PROPERTY_ID="$(op read 'op://DESIGN-OPS/Google Analytics/property_id' 2>/dev/null)"
+  echo "DESIGN-OPS secrets loaded"
+}
+```
+
+**Step 3: Run `source ~/.zshrc` to reload**
+
+As we set up each tool, I'll help you store its credentials in 1Password.
+
+[Continue to tool setup →]
+```
+
+**[Tell me more]:**
+
+Show summary from `references/security.md`, then return to options.
+
+**If no secrets manager detected:**
+
+```markdown
+## Secrets Management Notice
+
+No secrets manager CLI detected (1Password, Bitwarden).
+
+**Security recommendation:** Store API keys in a secrets manager instead of plain text.
+
+**Quick options:**
+- Install 1Password CLI: `brew install --cask 1password-cli`
+- Install Bitwarden CLI: `brew install bitwarden-cli`
+
+For now, you can continue — just be careful not to commit keys to git.
+
+📖 See: references/security.md for detailed setup
+
+[Continue anyway] | [I'll install 1Password first]
+```
+
+Store detection result in memory for use during tool setup:
+
+```yaml
+_session:
+  secrets_manager: "1password" | "bitwarden" | "none"
+  secrets_vault: "DESIGN-OPS"  # If using 1Password
+```
+
 ### 2. Check Existing Configuration
 
 1. **Check for existing config** at `~/.claude/design-ops-config.yaml`
@@ -1165,11 +1263,32 @@ Notion MCP needs your API key to connect.
 **To complete:**
 1. Go to https://www.notion.so/my-integrations
 2. Create an integration and copy the token
+```
+
+**If 1Password detected (from session):**
+```markdown
+3. Store in 1Password:
+   ```bash
+   op item create \
+     --category="API Credential" \
+     --title="Notion API" \
+     --vault="DESIGN-OPS" \
+     'credential=YOUR_TOKEN_HERE'
+   ```
+4. The secret will be loaded automatically when you run `load_design_ops_secrets`
+
+[I've stored it — verify now] [Skip for now]
+```
+
+**If no secrets manager:**
+```markdown
 3. Add to your shell profile:
    ```bash
    export NOTION_API_KEY="your-token-here"
    ```
 4. Restart your terminal
+
+⚠️ **Security note:** Consider using 1Password CLI for safer secret storage.
 
 [I've set it up — verify now] [Skip for now]
 ```
