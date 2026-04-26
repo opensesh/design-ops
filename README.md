@@ -54,18 +54,13 @@ Installs globally to `~/.claude/plugins/design-ops/`.
 
 ### Updating
 
-```bash
-cd DESIGN-OPS
-bash .design-ops/update.sh
-```
-
-Or manually:
+Run from anywhere:
 
 ```bash
-cd DESIGN-OPS
-git pull
-bash .design-ops/install.sh
+bash ~/.claude/design-ops/update.sh
 ```
+
+The script automatically finds your installation, shows available updates, and reinstalls.
 
 **Note:** Start a new Claude Code session after updating.
 

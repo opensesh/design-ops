@@ -22,6 +22,7 @@ DESIGN_OPS_ROOT="$(dirname "$SCRIPT_DIR")"
 
 # Global directories
 CLAUDE_DIR="$HOME/.claude"
+DESIGN_OPS_META_DIR="$CLAUDE_DIR/design-ops"
 
 echo
 echo -e "${BLUE}╭──────────────────────────────────────────────────────────────╮${NC}"
@@ -54,6 +55,14 @@ else
     claude plugin install design-ops@design-ops
     echo -e "${GREEN}  Plugin reinstalled${NC}"
 fi
+
+# Save source path and copy update script for easy access
+echo "Setting up update mechanism..."
+mkdir -p "$DESIGN_OPS_META_DIR"
+echo "$DESIGN_OPS_ROOT" > "$DESIGN_OPS_META_DIR/.source-path"
+cp "$DESIGN_OPS_ROOT/.design-ops/update.sh" "$DESIGN_OPS_META_DIR/update.sh"
+chmod +x "$DESIGN_OPS_META_DIR/update.sh"
+echo -e "${GREEN}  Update script available at: ~/.claude/design-ops/update.sh${NC}"
 
 # Update global CLAUDE.md
 echo "Updating CLAUDE.md..."
